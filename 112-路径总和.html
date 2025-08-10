@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=\, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        function TreeNode(val, left, right) {
+            this.val = (val === undefined ? 0 : val)
+            this.left = (left === undefined ? null : left)
+            this.right = (right === undefined ? null : right)
+        }
+
+        var hasPathSum = function (root, targetSum) {
+            const queueNode = [root]
+            const queueVal = [root.val]
+            let tempNode = root, tempVal, tempSum
+            debugger
+            while (queueNode.length) {
+                tempNode = queueNode.pop()
+                tempVal = queueVal.pop()
+                if (tempNode.left) {
+                    queueNode.push(tempNode.left)
+                    tempSum = tempVal + tempNode.left.val
+                    if (tempSum === targetSum) return true
+                    queueVal.push(tempSum)
+                }
+                if (tempNode.right) {
+                    queueNode.push(tempNode.right)
+                    tempSum = tempVal + tempNode.right.val
+                    if (tempSum === targetSum) return true
+                    queueVal.push(tempSum)
+                }
+            }
+            return false
+        };
+        const node4_7 = new TreeNode(7)
+        const node4_2 = new TreeNode(2)
+        const node3_13 = new TreeNode(13)
+        const node4_1 = new TreeNode(1)
+
+        const node3_11 = new TreeNode(11, node4_7, node4_2)
+        const node2_4 = new TreeNode(4, node3_11, null)
+        const node3_4 = new TreeNode(4, null, node4_1)
+        const node2_8 = new TreeNode(8, node3_13, node3_4)
+        const node1_5 = new TreeNode(5, node2_4, node2_8)
+        console.log(node1_5);
+        hasPathSum(node1_5, 22)
+    </script>
+</body>
+
+</html>

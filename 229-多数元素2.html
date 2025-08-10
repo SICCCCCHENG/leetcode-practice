@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var majorityElement = function (nums) {
+            let candidate1 = null
+            let candidate2 = null
+            let count1 = 0
+            let count2 = 0
+            for (const ele of nums) {
+                if (candidate1 === ele && count1 > 0) {
+                    count1++
+                } else if (candidate2 === ele && count2 > 0) {
+                    count2++
+                } else if (candidate1 === null) {
+                    candidate1 = ele
+                    count1 = 1
+                } else if (candidate2 === null) {
+                    candidate2 = ele
+                    count2 = 1
+                } else {
+                    count1--
+                    count2--
+                    if (count1 === 0) {
+                        candidate1 = null
+                    }
+                    if (count2 === 0) {
+                        candidate2 = null
+                    }
+                }
+            }
+            debugger
+            let num1 = 0, num2 = 0
+            for (const ele of nums) {
+                if (ele === candidate1) {
+                    num1++
+                } else if (ele === candidate2) {
+                    num2++
+                }
+            }
+            const ans = []
+            if (num1 > (nums.length / 3)) ans.push(candidate1)
+            if (num2 > (nums.length / 3)) ans.push(candidate2)
+            return ans
+        };
+        majorityElement([2, 2, 3, 1])
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var predictPartyVictory = function (senate) {
+            const length = senate.length
+            const queueR = []
+            const queueD = []
+
+            // 初始化
+            for (let i = 0; i < length; i++) {
+                if (senate[i] === 'R') {
+                    queueR.push(i)
+                } else {
+                    queueD.push(i)
+                }
+            }
+            debugger
+            let index = 0
+            while (queueR.length && queueD.length) {
+                if (queueR[index] < queueD[index]) {
+                    queueR.push(queueR.shift() + length)
+                    queueD.shift()
+                } else {
+                    queueD.push(queueD.shift() + length)
+                    queueR.shift()
+                }
+            }
+            return queueR.length ? 'Radiant' : 'Dire'
+        };
+
+        predictPartyVictory("RD")
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        var integerReplacement = function (n) {
+            let ans = 0
+            debugger
+            while (n !== 1) {
+                if (n % 2 === 0) { // 为偶数
+                    n /= 2
+                    ans++
+                } else {  // 为奇数
+                    if (((n - 1) / 2) % 2 === 0) {
+                        n = (n - 1) / 2
+                    } else {
+                        n = (n + 1) / 2
+                    }
+                    ans += 2
+                }
+            }
+            return ans
+        };
+
+        console.log(integerReplacement(3));
+    </script>
+</body>
+
+</html>

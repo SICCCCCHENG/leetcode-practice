@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        // 并查集
+        var calcEquation = function (equations, values, queries) {
+            const length = equations.length
+            // 顶点对下标的映射
+            const res = []
+            const vu = new VerticeUnion(length)
+            debugger
+            for (let i = 0; i < length; i++) {
+                const [x, y] = equations[i]
+                if (!vu.vertex2index.has(y)) {
+                    vu.vertex2index.set(y, vu.parent.length)
+                    vu.parent.push(vu.parent.length)
+                    vu.weight.push(1)
+                }
+                if (!vu.vertex2index.has(x)) {
+                    vu.vertex2index.set(x, vu.parent.length)
+                    vu.parent.push(vu.vertex2index.get(y))
+                    vu.weight.push(values[i])
+                }
+                vu.union(x, y, values[i])
+            }
+            for (const [x, y] of queries) {
+                // 没有此顶点
+                if (!vu.vertex2index.has(x) || !vu.vertex2index.has(y)) {
+                    res.push(-1)
+                    // 不在同一个连通分量
+                } else if (vu.find(vu.vertex2index.get(x))[0] !== vu.find(vu.vertex2index.get(y))[0]) {
+                    res.push(-1)
+                } else {
+                    const quotient = vu.weight[vu.vertex2index.get(x)] / vu.weight[vu.vertex2index.get(y)]
+                    res.push(quotient)
+                }
+            }
+            return res
+        };
+
+        class VerticeUnion {
+            constructor(length) {
+                this.parent = []
+                this.weight = []
+                this.length = length
+                this.vertex2index = new Map()
+            }
+
+            find(index) {
+                if (this.parent[index] !== index) {
+                    const [root, cost] = this.find(this.parent[index])
+                    this.parent[index] = root
+                    this.weight[index] = cost * this.weight[index]
+                }
+                return [this.parent[index], this.weight[index]]
+            }
+            union(index_x, index_y, weight) {
+                const root_x = this.find(index_x)
+                const root_y = this.find(index_y)
+                if (root_x[0] !== root_y[0]) { // 不在同一个连通分量, 需要合并
+                    if (index_x === root_x[0]) {
+                        this.parent[index_x] = index_y
+                        this.weight[index_x] = weight
+                    } else {
+                        this.parent[root_x[0]] = index_y
+                        this.weight[root_x[0]] = weight / this.weight[index_x]
+                    }
+                }
+            }
+        }
+
+
+
+        console.log(calcEquation([["a", "b"], ["b", "c"]], [2.0, 3.0], [["a", "c"], ["b", "a"], ["a", "e"], ["a", "a"], ["x", "x"]]));
+        // console.log(calcEquation([["a", "b"], ["b", "c"], ["bc", "cd"]], [1.5, 2.5, 5.0], [["a", "c"], ["c", "b"], ["bc", "cd"], ["cd", "bc"]]));
+        // console.log(calcEquation([["a", "aa"]], [9.0], [["aa", "a"], ["aa", "aa"]]));
+
+        // console.log(calcEquation([["a", "b"], ["c", "d"]], [1.0, 1.0], [["a", "c"], ["b", "d"], ["b", "a"], ["d", "c"]]));
+
+        // console.log(calcEquation([["a", "b"], ["b", "c"], ["d", "e"], ["a", "d"]], [1.0, 2.0, 3.0, 4.0], [["c", "e"]]));
+
+        // [["d", "f"], ["e", "g"], ["e", "k"], ["h", "a"], ["aaa", "k"], ["aaa", "i"], ["aa", "e"], ["aaa", "aa"], ["aaa", "ff"], ["bbb", "bb"], ["bb", "h"], ["bb", "i"], ["bb", "k"], ["aaa", "k"], ["k", "l"], ["x", "k"], ["l", "ll"]]
+        // [ 1.66667,       1.5,        2.5,      0.14286,      10.0,           8.0,        4.0,            1.0,            5.0,        0.33333,        7.0,        8.0,        10.0,       10.0,           1.1,        -1.0,       -1.0    ]
+        // [ 1.66667,       1.50000,    2.50000,  0.14286,      10.00000,       8.00000,    4.00000,        1.00000,        5.00000,    0.33333,        2.33333,    2.66667,    3.33333,    10.00000,       1.10000,    -1.00000,   11.00000]
+    </script>
+</body>
+
+</html>

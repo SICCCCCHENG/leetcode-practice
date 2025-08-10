@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var canPartition2 = function (nums) {
+            const length = nums.length
+            let sum = 0
+            for (let i = 0; i < length; i++) {
+                sum += nums[i]
+            }
+            console.log((sum & 1));
+            if (!(sum & 1)) return false
+            nums.sort((a, b) => a - b)
+            let preSum = 0
+            debugger
+            for (let i = 0; i < length - 1; i++) {
+                preSum += nums[i]
+                if (preSum === sum / 2) return true
+                if (preSum > sum / 2) return false
+            }
+            return false
+        };
+
+        var canPartition3 = function (nums) {
+            const length = nums.length
+            let sum = 0
+            for (let i = 0; i < length; i++) {
+                sum += nums[i]
+            }
+            if (sum % 2 === 1) return false
+            const dp = new Array(length).fill(0).map(() => new Array(sum / 2 + 1).fill(false))
+            // dp[i][s] 
+            dp[0][0] = true
+            let preSum = 0
+            debugger
+            for (let i = 0; i < length; i++) {
+                preSum += nums[i]
+                for (let j = 0; j <= sum / 2; j++) {
+                    if (j <= preSum) {
+                        dp[i][j] = dp[i][j] || dp[i][j - nums[i]] || (i > 0 && dp[i - 1][j])
+                    } else {
+                        break
+                    }
+                }
+            }
+            return dp[length - 1][sum / 2]
+        };
+
+        var canPartition4 = function (nums) {
+            const length = nums.length
+            let sum = 0
+            for (let i = 0; i < length; i++) {
+                sum += nums[i]
+            }
+            if (sum % 2 === 1) return false
+            const dp = new Array(length).fill(0).map(() => new Array(sum / 2 + 1).fill(false))
+            dp[0][0] = true
+            let preSum = 0
+            debugger
+            for (let i = 0; i < length; i++) {
+                preSum += nums[i]
+                for (let s = 0; s <= sum / 2; s++) {
+                    if (preSum >= s) {
+                        let a = false, b = false
+                        if (i > 0) {
+                            a = dp[i - 1][s]
+                            b = dp[i - 1][s - nums[i]]
+                        }
+                        dp[i][s] = dp[i][s] || (i > 0 && (a || b))
+                    } else {
+                        break
+                    }
+                }
+            }
+            return dp[length - 1][sum / 2]
+        };
+
+        /**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+        var canPartition = function (nums) {
+            const length = nums.length
+            let sum = 0
+            for (let i = 0; i < length; i++) {
+                sum += nums[i]
+            }
+            if (sum % 2 === 1) return false
+            const dp = new Array(length).fill(0).map(() => new Array(sum / 2 + 1).fill(false))
+            // dp[i][s] 
+            dp[0][0] = true
+            let preSum = 0
+            debugger
+            let a, b
+            for (let i = 0; i < length; i++) {
+                preSum += nums[i]
+                for (let j = 0; j <= sum / 2; j++) {
+                    if (j <= preSum) {
+                        if(i > 0){
+                            a = dp[i - 1][j - nums[i]]
+                            b = dp[i - 1][j]
+                        }
+                        dp[i][j] = dp[i][j] || (i > 0 && (a || b))
+                    } else {
+                        break
+                    }
+                }
+            }
+            return dp[length - 1][sum / 2]
+        };
+
+        canPartition([1, 5, 11, 3])
+
+    </script>
+</body>
+
+</html>

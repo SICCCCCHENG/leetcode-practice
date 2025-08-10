@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        var isPossible = function (nums) {
+            const length = nums.length
+            const ending_map = {} // number of pre-sequence of ending w 'key' 
+            const unchecked_map = {} // number of unchecked number
+            for (let i = 0; i < length; i++) {
+                if (!unchecked_map[nums[i]]) {
+                    unchecked_map[nums[i]] = 1
+                } else {
+                    unchecked_map[nums[i]]++
+                }
+            }
+
+            let candidate
+
+            debugger
+            for (const key of Object.keys(unchecked_map).sort((a, b) => a - b)) {
+                while (unchecked_map[key]) {
+                    candidate = Number(key) - 1
+                    if (ending_map[candidate]) {
+                        ending_map[candidate]--
+                        if (ending_map[candidate + 1]) {
+                            ending_map[candidate + 1]++
+                        } else {
+                            ending_map[candidate + 1] = 1
+                        }
+
+                    } else {
+                        if (unchecked_map[Number(key) + 1] && unchecked_map[Number(key) + 2]) {
+                            if (ending_map[Number(key) + 2]) {
+                                ending_map[Number(key) + 2]++
+                            } else {
+                                ending_map[Number(key) + 2] = 1
+                            }
+                            unchecked_map[Number(key) + 1]--
+                            unchecked_map[Number(key) + 2]--
+                        } else {
+                            return false
+                        }
+                    }
+                    unchecked_map[key]--
+                }
+            }
+            return true
+        };
+        isPossible([1, 2, 3, 4, 4, 5])
+    </script>
+</body>
+
+</html>

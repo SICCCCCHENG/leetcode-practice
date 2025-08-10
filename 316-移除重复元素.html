@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        var removeDuplicateLetters = function (s) {
+            const obj = {}
+            const length = s.length
+            const queue = []
+            const queueSet = new Set()
+            // 记录最后一个出现的
+            for (let i = 0; i < length; i++) {
+                obj[s[i]] = i
+            }
+            debugger
+            for (let i = 0; i < length; i++) {
+                // 栈中不存在的才考虑入栈
+                if (!queueSet.has(s[i])) {
+                    // 如果 栈为空 或者 栈尾字符小于候选字符 直接入栈
+                    if (!queue.length || queue[queue.length - 1].charCodeAt() < s[i].charCodeAt()) {
+                        queue.push(s[i])
+                        queueSet.add(s[i])
+                        continue
+                    } else {
+                        while (queue.length && queue[queue.length - 1].charCodeAt() > s[i].charCodeAt() && obj[queue[queue.length - 1]] > i) {
+                            queueSet.delete(queue.pop())
+                        }
+                        queue.push(s[i])
+                        queueSet.add(s[i])
+                    }
+                }
+            }
+            return queue.join('')
+        };
+
+        console.log(removeDuplicateLetters('acbac')); 
+
+    </script>
+</body>
+
+</html>

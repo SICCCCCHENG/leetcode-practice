@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var nthSuperUglyNumber = function (n, primes) {
+            const dp_index = new Array(primes.length).fill(0)
+            const dp = new Array(n).fill(0)
+            dp[0] = 1
+            let min
+            for (let i = 1; i < n; i++) {
+                min = dp[dp_index[0]] * primes[0]
+                for (let j = 1; j < primes.length; j++) {
+                    min = Math.min(min, dp[dp_index[j]] * primes[j])
+                }
+                dp[i] = min
+                for (let k = 0; k < primes.length; k++) {
+                    if (dp[dp_index[k]] * primes[k] === dp[i]) dp_index[k]++
+                }
+            }
+            return dp[n - 1]
+        };
+
+        nthSuperUglyNumber(12, [2, 7, 13, 19])
+    </script>
+</body>
+
+</html>

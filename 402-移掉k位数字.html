@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var removeKdigits = function (num, k) {
+            const monotonicQueue = []
+            const length = num.length
+            if (k >= length) return '0'
+            let ans = ''
+            debugger
+            for (let i = 0; i < length; i++) {
+                while (monotonicQueue.length && Number(monotonicQueue[monotonicQueue.length - 1]) > Number(num[i]) && k > 0) {
+                    monotonicQueue.pop()
+                    k--
+                }
+                monotonicQueue.push(num[i])
+            }
+            return String(Number(monotonicQueue.join('').substr(0, length - k)))
+        };
+        removeKdigits('1173', 2)
+    </script>
+</body>
+
+</html>

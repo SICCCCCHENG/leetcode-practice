@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var numDecodings2 = function (s) {
+            const length = s.length
+            let rtn = 0
+            debugger
+            const helper = (index) => {
+                if (s[index] === '0') return  // 起始位置为 0 直接 返回
+                if (index === length) { // collect the answer
+                    rtn++
+                }
+                if (index < length) {
+                    helper(index + 1)
+                }
+                if (index + 1 < length && Number(s[index]) <= 2 && Number(s[index + 1]) <= 6) {
+                    helper(index + 2)
+                }
+            }
+            helper(0)
+            return rtn
+        };
+        const str = "2611055971756562"
+        const arr = str.split('')
+        // numDecodings(str)
+
+        var numDecodings = function (s) {
+            if (s[0] === '0') return 0
+            const length = s.length
+            let two = 1
+            let one = s[length - 1] === '0' ? 0 : 1
+            debugger
+            for (let i = length - 2; i >= 0; i--) {
+                if (s[i] === '0' || +s[i] > 2 || (+s[i] === 2 && +s[i + 1] > 6)) {
+                    temp = 0
+                } else {
+                    temp = one + two
+                }
+                two = one
+                one = temp
+            }
+            return Math.max(one, two)
+        };
+
+        numDecodings("1201234")
+    </script>
+</body>
+
+</html>

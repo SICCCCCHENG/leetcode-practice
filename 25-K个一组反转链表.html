@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        function ListNode(val, next) {
+            this.val = (val === undefined ? 0 : val)
+            this.next = (next === undefined ? null : next)
+        }
+
+        var reverseKGroup = function (head, k) {
+            // 先遍历确认是否有有 k 个节点
+            debugger
+            if (head === null || k === 1) return head
+            let tempNode = head, count = 1
+            while (true) {
+                if (count === k) {
+                    break
+                }
+                if (tempNode.next !== null) return head
+                tempNode = tempNode.next
+                count++
+            }
+
+            // 含有 k 个节点，可进行反转
+            // const dummyNode = new ListNode(-1, head)
+
+            let pre = reverseKGroup(tempNode.next, k)
+            tempNode.next = null
+            let curr = head, next = curr.next
+            while (curr) {
+                curr.next = pre
+                curr = next
+                next = curr.next
+            }
+            console.log(tempNode);
+            return tempNode
+        };
+
+        console.log(
+            reverseKGroup(
+                new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5, null))))),
+                3
+            )
+        ); 
+    </script>
+</body>
+
+</html>

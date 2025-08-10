@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.core.min.js"></script>
+</head>
+
+<body>
+    <script>
+        // sort + pq
+        var mincostToHireWorkers2 = function (quality, wage, k) {
+            const length = quality.length
+            const workerInfo = quality.map((item, index) => ({ q: item, w: wage[index], unitWage: wage[index] / item })).sort((a, b) => b.unitWage - a.unitWage)
+            let ans = Infinity, tempArr = [], currUnit, tempQ
+            debugger
+            for (let i = 0; i <= length - k; i++) {
+                currUnit = workerInfo[i].unitWage
+                tempQ = workerInfo[i].q
+                for (let j = i + 1; j < length; j++) {
+                    tempArr.push(workerInfo[j])
+                }
+                tempArr.sort((a, b) => a.q - b.q)
+                for (let j = 0; j < k - 1; j++) {
+                    tempQ += tempArr[j].q
+                }
+                ans = Math.min(ans, currUnit * tempQ)
+                tempArr = []
+            }
+            return ans
+        };
+
+        var mincostToHireWorkers3 = function (quality, wage, k) {
+            const length = quality.length
+            const workerInfo = quality.map((item, index) => ({ q: item, w: wage[index], unitWage: wage[index] / item })).sort((a, b) => b.unitWage - a.unitWage)
+            let pq = new MaxPriorityQueue();
+            let ans = Infinity, currUnit, tempQ
+            debugger
+            for (let i = 0; i <= length - k; i++) {
+                currUnit = workerInfo[i].unitWage
+                tempQ = workerInfo[i].q
+                for (let j = i + 1; j < length; j++) {
+                    pq.enqueue(workerInfo[j].q)
+                }
+                for (let j = 0; j < k - 1; j++) {
+                    tempQ += pq.dequeue().element
+                }
+                ans = Math.min(ans, currUnit * tempQ)
+                pq = new MaxPriorityQueue();
+            }
+            return ans
+        };
+
+
+        // sort + pq
+        var mincostToHireWorkers = function (quality, wage, k) {
+            const length = quality.length
+            const workerInfo = quality.map((item, index) => ({
+                q: item,
+                w: wage[index],
+                unitWage: wage[index] / item,
+                taken: false
+            })).sort((a, b) => b.unitWage - a.unitWage)
+            const orderByQuality = [...workerInfo].sort((a, b) => a.q - b.q)
+            let ans = Infinity, tempQ, cnt = 0, currWorker
+            debugger
+            for (let i = 0; i <= length - k; i++) {
+                currWorker = workerInfo[i]
+                currWorker.taken = true
+                tempQ = currWorker.q
+                for (let j = 0; j < length; j++) {
+                    if (!orderByQuality[j].taken) {
+                        tempQ += orderByQuality[j].q
+                        cnt++
+                        if (cnt === k - 1) break
+                    }
+                }
+                cnt = 0
+                ans = Math.min(ans, currWorker.unitWage * tempQ)
+            }
+            return ans
+        };
+        // mincostToHireWorkers([10, 20, 5], [70, 50, 30], 2)
+
+        mincostToHireWorkers([1, 2], [14, 16], 1)
+        // mincostToHireWorkers([3, 1, 10, 10, 1], [4, 8, 2, 2, 7], 3)
+    </script>
+</body>
+
+</html>

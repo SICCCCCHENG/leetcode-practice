@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var canReorderDoubled2 = function (arr) {
+            const length = arr.length
+            arr.sort((a, b) => b - a)
+            const map = {}
+            let i = 0
+            debugger
+            for (; i < length && arr[i] >= 0; i++) {
+                helper(map, i, arr)
+            }
+            for (let j = length - 1; j >= i; j--) {
+                helper(map, j, arr)
+            }
+            return Object.keys(map).length === 0
+        };
+
+        const helper = (map, i, arr) => {
+            if (!map[2 * arr[i]]) {
+                map[arr[i]] = 1
+            } else {
+                map[arr[i] * 2]--
+                if (map[arr[i] * 2] === 0) {
+                    delete map[arr[i] * 2]
+                }
+            }
+        }
+
+        var canReorderDoubled3 = function (arr) {
+            const length = arr.length
+            const map = {}
+            // 初始化
+            for (let i = 0; i < length; i++) {
+                map[arr[i]] = (map[arr[i]] || 0) + 1
+            }
+            arr.sort((a, b) => Math.abs(a) - Math.abs(b))
+            if ((map['0'] || 0) & 1) return false
+            debugger
+            for (let i = 0; i < length; i++) {
+                if (map[arr[i]]) {
+                    if (!map[2 * arr[i]]) {
+                        return false
+                    }
+                    map[arr[i]]--
+                    map[2 * arr[i]]--
+                    if (map[2 * arr[i]] === 0) {
+                        delete map[2 * arr[i]]
+                    }
+                    if (map[arr[i]] === 0) {
+                        delete map[arr[i]]
+                    }
+                }
+            }
+            return !Object.keys(map).length
+        };
+
+        var canReorderDoubled4 = function (arr) {
+            const length = arr.length
+            const map = {}
+            // 初始化
+            for (let i = 0; i < length; i++) {
+                map[arr[i]] = (map[arr[i]] || 0) + 1
+            }
+            arr.sort((a, b) => Math.abs(a) - Math.abs(b))
+            debugger
+            if ((map['0'] || 0) & 1) return false
+            for (let i = 0; i < Object.keys(map).length / 2; i++) {
+                if (!map[2 * arr[i]] || map[arr[i]] > map[2 * arr[i]]) return false
+                map[2 * arr[i]] = (map[2 * arr[i]] || 0) - map[arr[i]]
+            }
+            return true
+        };
+        var canReorderDoubled = function (arr) {
+            const cnt = new Map();
+            for (const x of arr) {
+                cnt.set(x, (cnt.get(x) || 0) + 1);
+            }
+            if ((cnt.get(0) || 0) % 2 !== 0) {
+                return false;
+            }
+
+            debugger
+
+            const vals = [];
+            for (const x of cnt.keys()) {
+                vals.push(x);
+            }
+            vals.sort((a, b) => Math.abs(a) - Math.abs(b));
+
+            for (const x of vals) {
+                if ((cnt.get(2 * x) || 0) < cnt.get(x)) { // 无法找到足够的 2x 与 x 配对
+                    return false;
+                }
+                cnt.set(2 * x, (cnt.get(2 * x) || 0) - cnt.get(x));
+            }
+            return true;
+        };
+
+        canReorderDoubled([1, 2, 2, 16, -8, 4])
+    </script>
+</body>
+
+</html>

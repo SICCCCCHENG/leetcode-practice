@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var lengthOfLIS2 = function (nums) {
+            const length = nums.length
+            const monotonicQueue = []
+            let ans = 0
+            debugger
+            for (let i = 0; i < length; i++) {
+                while (monotonicQueue.length && monotonicQueue[monotonicQueue.length - 1] > nums[i]) {
+                    monotonicQueue.pop()
+                }
+                if (!monotonicQueue.length || monotonicQueue[monotonicQueue.length - 1] < nums[i]) {
+                    monotonicQueue.push(nums[i])
+                    ans = Math.max(ans, monotonicQueue.length)
+                }
+            }
+            return ans
+        };
+        var lengthOfLIS3 = function (nums) {
+            const length = nums.length
+            const dp = new Array(length).fill(1)
+            let max = 0
+            debugger
+            for (let i = 1; i < length; i++) {
+                for (let j = 0; j < i; j++) {
+                    if (nums[i] > nums[j]) {
+                        dp[i] = Math.max(dp[j], dp[i]) + 1
+                        max = Math.max(max, dp[i])
+                    }
+                }
+            }
+            return max
+        };
+
+        var lengthOfLIS = function (nums) {
+            const length = nums.length
+            const dp = new Array(length).fill(1)
+            let max = dp[0]
+            debugger
+            for (let i = 1; i < length; i++) {
+                for (let j = 0; j < i; j++) {
+                    if (nums[i] > nums[j]) {
+                        dp[i] = dp[j] + 1
+                        max = Math.max(max, dp[i])
+                    }
+                }
+            }
+            return max
+        };
+        console.log(lengthOfLIS([0, 1, 0, 3, 2, 3])); 
+    </script>
+</body>
+
+</html>

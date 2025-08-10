@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var minDeletionSize2 = function (strs) {
+            const arrLength = strs.length
+            const strLength = strs[0].length
+            let ans = 0
+            let tbd = [new Array(arrLength).fill(0).map((_, index) => index)]
+            debugger
+            const helper = (start) => {
+                const next = []
+                for (const subArr of tbd) {
+                    const temp = new Set()
+                    for (let i = 0; i < subArr.length - 1; i++) {
+                        if (strs[subArr[i]][start].charCodeAt() > strs[subArr[i + 1]][start].charCodeAt()) {
+                            return -1
+                        } else if (strs[subArr[i]][start].charCodeAt() === strs[subArr[i + 1]][start].charCodeAt()) {
+                            temp.add(i)
+                            temp.add(i + 1)
+                        }
+                    }
+                    if (temp.size) {
+                        next.push([...temp].sort((a, b) => a - b))
+                    }
+                }
+                // for (let i = 0; i < tbd.length - 1; i++) {
+                //     if (tbd[i][tbd[i].length - 1] > )
+                // }
+                return next.length ? next : []
+            }
+            let res
+            for (let k = 0; k < strLength; k++) {
+                res = helper(k)
+                if (res === -1) {
+                    ans++
+                } else if (res.length) {
+                    tbd = res
+                } else {
+                    return ans
+                }
+            }
+            return ans
+        };
+
+        var minDeletionSize3 = function (strs) {
+            const arrLength = strs.length
+            const strLength = strs[0].length
+            let ans = 0
+            debugger
+            const helper = (start) => {
+                for (let i = 0; i < arrLength - 1; i++) {
+                    if (strs[i][start].charCodeAt() > strs[i + 1][start].charCodeAt()) {
+                        return -1
+                    } else if (strs[i][start].charCodeAt() === strs[i + 1][start].charCodeAt()) {
+                        return 0
+                    }
+                }
+                return 1
+            }
+            let temp
+            for (let k = 0; k < strLength; k++) {
+                temp = helper(k)
+                if (temp = -1) {
+                    ans++
+                } else if (temp === 1) {
+                    return ans
+                }
+            }
+            return ans
+        };
+        var minDeletionSize = function (strs) {
+            const arrLength = strs.length
+            const strLength = strs[0].length
+            let ans = 0
+            let tbd = [new Array(arrLength).fill(0).map((_, index) => index)]
+            debugger
+            const helper = (start) => {
+                const next = []
+                for (const subArr of tbd) {
+                    let temp = new Set()
+                    for (let i = 0; i < subArr.length - 1; i++) {
+                        if (strs[subArr[i]][start].charCodeAt() > strs[subArr[i + 1]][start].charCodeAt()) {
+                            return -1
+                        } else if (strs[subArr[i]][start].charCodeAt() === strs[subArr[i + 1]][start].charCodeAt()) {
+                            temp.add(subArr[i])
+                            temp.add(subArr[i + 1])
+                            i++
+                            while (i < subArr.length - 1 && strs[subArr[i]][start].charCodeAt() === strs[subArr[i + 1]][start].charCodeAt()) {
+                                temp.add(subArr[i])
+                                temp.add(subArr[i + 1])
+                                i++
+                            }
+                            i--
+                            next.push([...temp])
+                            temp = new Set()
+                        }
+                    }
+                }
+                return next.length ? next : []
+            }
+            let res
+            for (let k = 0; k < strLength; k++) {
+                res = helper(k)
+                if (res === -1) {
+                    ans++
+                } else if (res.length) {
+                    tbd = res
+                } else {
+                    return ans
+                }
+            }
+            return ans
+        };
+
+        console.log(minDeletionSize(["hdbbaomiyk", "amcdtrnhjn", "fheqnqdkjq", "mfeluiclbm", "jkexmcstwn", "egfmxwjxdj", "ayhowbifcx", "swhykufgfk", "vxhdwxuhwj", "johfdcfojv", "rnircklfcm", "lzkwfqomcz", "fvkkhzomgb", "aukuoedptv", "eimzwmlgxj", "ptmnmgppso", "oknfgdtweb", "mtnukewwir", "nlowbhwjdm", "tcovbbvuuw", "ilqyvtgnfv", "nrqgupdyyg", "wnrdwmsnzt", "rosqrtdeus", "bysheeghqg", "ciswvgqqlf", "uwteztkmqf", "tbumqubzdb", "dqxbfiwuvm", "atxbvdiywo"]));
+
+        // minDeletionSize(["ca", "bb", "ac"])
+        // console.log(minDeletionSize(["abx", "agz", "bgc", "bfc"])); 
+    </script>
+</body>
+
+</html>

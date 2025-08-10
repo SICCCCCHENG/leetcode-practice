@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        var numIslands1 = function (grid) {
+            const m = grid[0].length
+            const n = grid.length
+            // debugger
+            if (n === 1) {
+                return grid[0].join('').split('0').reduce((pre, item) => {
+                    debugger
+                    return pre + (item ? 1 : 0)
+                }, 0)
+            }
+            let str = ''
+            if (m === 1) {
+                for (let item of grid) {
+                    str += item[0]
+                }
+                return str.split('0').reduce((pre, item) => (pre + item ? 1 : 0), 0)
+            }
+            const parentArr = new Array(m + n).fill(0).map((_, index) => index)
+            const rank = new Array(m + n).fill(0)
+            const set = new Set()
+            const x = new Array(m).fill(0), y = new Array(n).fill(0)
+            let countDeduct = 0
+            for (let i = m; i < m + n; i++) {
+                for (let j = 0; j < m; j++) {
+                    x[j] += Number(grid[i - m][j])
+                    y[i - m] += Number(grid[i - m][j])
+                    if (grid[i - m][j] === '1') {
+                        combine(parentArr, rank, i, j)
+                    }
+                }
+            }
+            for (const item of x) {
+                if (item === 0) countDeduct++
+            }
+            for (const item of y) {
+                if (item === 0) countDeduct++
+            }
+            const length = parentArr.length
+            for (let i = 0; i < length; i++) {
+                set.add(find(parentArr, i))
+            }
+            return set.size - countDeduct
+        };
+
+        const find = (parentArr, index) => {
+            while (parentArr[index] !== index) {
+                index = parentArr[index]
+            }
+            return index
+        }
+        const combine = (parentArr, rank, a, b) => {
+            const parentA = find(parentArr, a)
+            const parentB = find(parentArr, b)
+            if (parentA !== parentB) {
+                if (rank[parentA] > rank[parentB]) {
+                    parentArr[parentB] = parentA
+                } else if (rank[parentA] < rank[parentB]) {
+                    parentArr[parentA] = parentB
+                } else {
+                    parentArr[parentB] = parentA
+                    rank[parentB]++
+                }
+            }
+        }
+
+
+        var numIslands = function (grid) {
+            const m = grid[0].length
+            const n = grid.length
+            const isVisited = new Array(n).fill(0).map(() => new Array(m).fill(false))
+            let count = 0
+            const dfs = (x, y) => {
+                if (x < 0 || x >= m || y < 0 || y >= n) return // 超出边界
+                // if(isVisited[x][y] === '1') return  // 访问过了
+                isVisited[x][y] = true
+                if (y - 1 >= 0 && grid[x][y - 1] === '1' && !isVisited[x][y - 1]) { // 上
+                    dfs(x, y - 1)
+                }
+                if (x + 1 < n && grid[x + 1][y] === '1' && !isVisited[x + 1][y]) { // 右
+                    dfs(x + 1, y)
+                }
+                if (y + 1 < m && grid[x][y + 1] === '1' && !isVisited[x][y + 1]) { // 下
+                    dfs(x, y + 1)
+                }
+                if (x - 1 >= 0 && grid[x - 1][y] === '1' && !isVisited[x - 1][y]) { // 左
+                    dfs(x - 1, y)
+                }
+            }
+            for (let i = 0; i < n; i++) {
+                for (let j = 0; j < m; j++) {
+                    if (grid[i][j] === '1' && !isVisited[i][j]) {
+                        count++
+                        debugger
+                        dfs(i, j)
+                    }
+                }
+            }
+
+            return count
+        };
+
+        // numIslands([["1", "1", "1", "1", "0"], ["1", "1", "0", "1", "0"], ["1", "1", "0", "0", "0"], ["0", "0", "0", "0", "0"]])
+        numIslands([["1", "0", "1", "1", "0", "1", "1"]])
+    </script>
+</body>
+
+</html>

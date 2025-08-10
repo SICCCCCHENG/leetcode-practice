@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var minAddToMakeValid = function (s) {
+            let bracket = 0
+            const length = s.length
+            let ans = 0
+            debugger
+            for (let i = 0; i < length; i++) {
+                if (s[i] === '(') {
+                    bracket++
+                } else {
+                    bracket--
+                    if (bracket < 0) {
+                        ans = ans - bracket
+                        bracket = 0
+                    }
+                }
+            }
+            return ans
+        };
+
+        minAddToMakeValid("())")
+
+    </script>
+</body>
+
+</html>

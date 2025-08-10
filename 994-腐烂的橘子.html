@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        var orangesRotting = function (grid) {
+            const m = grid[0].length
+            const n = grid.length
+            const deque = [] // 准备要腐蚀其他橘子的橘子
+            let minites = 0
+            let fresh = 0  // 记录总共的新鲜的橘子
+            // 初始化 deque
+            for (let i = 0; i < n; i++) {
+                for (let j = 0; j < m; j++) {
+                    if (grid[i][j] === 2) {
+                        deque.push([i, j])
+                    } else if (grid[i][j] === 1) {
+                        fresh++
+                    }
+                }
+            }
+
+            let preFresh = fresh // 记录上一轮的新鲜的橘子
+            let count = deque.length // 每轮刚被腐蚀的橘子
+
+            debugger
+            // 开始腐蚀
+            while (deque.length) {
+                for (let i = 0; i < count; i++) {
+                    const [x, y] = deque.shift()
+                    if (x - 1 >= 0 && grid[x - 1][y] === 1) { // 上
+                        fresh--
+                        grid[x - 1][y] = 2
+                        deque.push([x - 1, y])
+                    }
+                    if (y + 1 < m && grid[x][y + 1] === 1) { // 右
+                        fresh--
+                        grid[x][y + 1] = 2
+                        deque.push([x, y + 1])
+                    }
+                    if (x + 1 < n && grid[x + 1][y] === 1) { // 下
+                        fresh--
+                        grid[x + 1][y] = 2
+                        deque.push([x + 1, y])
+                    }
+                    if (y - 1 >= 0 && grid[x][y - 1] === 1) { // 左
+                        fresh--
+                        grid[x][y - 1] = 2
+                        deque.push([x, y - 1])
+                    }
+
+                }
+                // 这轮没有腐蚀到橘子，已经没有可以腐蚀的橘子了
+                if (fresh === preFresh) {
+                    return fresh === 0 ? minites : -1
+                }
+                // 腐蚀到了橘子
+                minites++
+                preFresh = fresh
+                count = deque.lengths
+            }
+            return minites
+        };
+
+        orangesRotting([[2, 1, 1], [1, 1, 0], [0, 1, 1]])
+
+    </script>
+</body>
+
+</html>

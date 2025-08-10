@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // var validPath = function (n, edges, source, destination) {
+        //     const parentArr = new Array(n).fill(0).map((_, index) => index)
+        //     for (const [a, b] of edges) {
+        //         union1(parentArr, a, b)
+        //     }
+        //     return find1(parentArr, source) === find1(parentArr, destination)
+        // };
+
+        // const union1 = (parentArr, a, b) => {
+        //     // debugger
+        //     const parentA = find(parentArr, a)
+        //     const parentB = find(parentArr, b)
+        //     if (parentA !== parentB) {
+        //         parentArr[parentB] = parentA
+        //     }
+        // }
+
+        // const find1 = (parentArr, index) => {
+        //     while (parentArr[index] !== index) {
+        //         index = parentArr[index]
+        //     }
+        //     return index
+        // }
+        // console.log(validPath(
+        //     10,
+        //     [[4, 3], [1, 4], [4, 8], [1, 7], [6, 4], [4, 2], [7, 4], [4, 0], [0, 9], [5, 4]],
+        //     5,
+        //     9)
+        // );
+
+
+    </script>
+
+    <script>
+        /**
+         * @param {number} n
+         * @param {number[][]} edges
+         * @param {number} source
+         * @param {number} destination
+         * @return {boolean}
+         */
+        // var validPath = function (n, edges, source, destination) {
+        //     const parentArr = new Array(n).fill(0).map((_, index) => index)
+        //     for (const [a, b] of edges) {
+        //         union(parentArr, a, b)
+        //     }
+        //     debugger
+        //     return find(parentArr, source) === find(parentArr, destination)
+        // };
+
+        // const union = (parentArr, a, b) => {
+        //     const parentA = find(parentArr, a)
+        //     const parentB = find(parentArr, b)
+        //     if (parentA !== parentB) {
+        //         parentArr[parentB] = parentA
+        //     }
+        // }
+
+        // const find = (parentArr, index) => {
+        //     let temp = index
+        //     while (parentArr[index] !== index) {
+        //         index = parentArr[index]
+        //     }
+        //     let temp2
+        //     while (parentArr[temp] !== index) {
+        //         temp2 = parentArr[temp]
+        //         parentArr[temp] = index
+        //         temp = temp2
+        //     }
+        //     return index
+        // }
+
+
+
+
+        var validPath = function (n, edges, source, destination) {
+            if (source === destination) {
+                return true;
+            }
+            const uf = new UnionFind(n);
+            for (const edge of edges) {
+                uf.uni(edge[0], edge[1]);
+            }
+            return uf.connect(source, destination);
+        }
+
+        class UnionFind {
+            constructor(n) {
+                this.parent = new Array(n).fill(0).map((_, i) => i);
+                this.rank = new Array(n).fill(0);
+            }
+
+            uni(x, y) {
+                const rootx = this.find(x);
+                const rooty = this.find(y);
+                if (rootx !== rooty) {
+                    if (this.rank[rootx] > this.rank[rooty]) {
+                        this.parent[rooty] = rootx;
+                    } else if (this.rank[rootx] < this.rank[rooty]) {
+                        this.parent[rootx] = rooty;
+                    } else {
+                        this.parent[rooty] = rootx;
+                        this.rank[rootx]++;
+                    }
+                }
+            }
+
+            find(x) {
+                if (this.parent[x] !== x) {
+                    this.parent[x] = this.find(this.parent[x]);
+                }
+                return this.parent[x];
+            }
+
+            connect(x, y) {
+                console.log(this, 'this');
+                return this.find(x) === this.find(y);
+            }
+        }
+
+        // console.log(validPath(
+        //     10,
+        //     [[4, 3], [1, 4], [4, 8], [1, 7], [6, 4], [4, 2], [7, 4], [4, 0], [0, 9], [5, 4]],
+        //     5,
+        //     9)
+        // );
+        console.log(validPath(
+            11,
+            [[1, 2], [2, 3], [3, 4], [2, 4], [7, 8], [8, 9], [9, 10], [10, 11], [2, 9], [5, 6]],
+            2,
+            9)
+        );
+    </script>
+</body>
+
+</html>

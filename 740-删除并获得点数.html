@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var deleteAndEarn = function (nums) {
+            const length = nums.length
+            if (length === 1) return nums[0]
+            const map = {}
+            for (let i = 0; i < length; i++) {
+                map[nums[i]] = (map[nums[i]] || 0) + 1
+            }
+            const keysArr = Object.keys(map)
+            keysArr.sort((a, b) => a - b)
+            let one = keysArr[0] * map[keysArr[0]]
+            let two
+            debugger
+            if (keysArr[1] - keysArr[0] >= 2) {
+                two = +keysArr[0] + +keysArr[1]
+            } else {
+                two = Math.max(one, keysArr[1] * map[keysArr[1]])
+            }
+            let temp
+            for (let i = 2; i < keysArr.length; i++) {
+                if (keysArr[i] - keysArr[i - 1] >= 2) {
+                    temp = Math.max(one + Number(keysArr[i]) * map[keysArr[i]], two + Number(keysArr[i]) * map[keysArr[i]])
+                } else {
+                    temp = Math.max(one + Number(keysArr[i]) * map[keysArr[i]], two)
+                }
+                one = two
+                two = temp
+            }
+            return two
+        };
+        deleteAndEarn([1, 6, 3, 3, 8, 4, 8, 10, 1, 3])
+    </script>
+</body>
+
+</html>

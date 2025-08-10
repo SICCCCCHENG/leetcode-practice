@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var brokenCalc = function (startValue, target) {
+            let count = 0
+            debugger
+            while (startValue < target) {
+                if (target % 2) { // 若是奇数
+                    target += 1
+                    count++
+                }
+                target /= 2
+                count++
+            }
+            return count + startValue - target
+        };
+        brokenCalc(3, 8)
+    </script>
+</body>
+
+</html>

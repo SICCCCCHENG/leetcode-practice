@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var countSubstrings = function (s) {
+            const length = s.length
+            const dp = new Array(length).fill(0).map(() => new Array(length).fill(false))
+            const res = []
+            debugger
+            for (let i = 0; i < length; i++) {
+                for (let j = 0; j <= i; j++) {
+                    if (i - j <= 2) {
+                        dp[i][j] = s[i] === s[j]
+                    } else {
+                        dp[i][j] = s[i] === s[j] && dp[i - 1][j + 1]
+                    }
+                    if (dp[i][j]) {
+                        res.push(s.substring(j, i + 1))
+                    }
+                }
+            }
+            return res.length
+        };
+        countSubstrings("aaaaa")
+    </script>
+</body>
+
+</html>

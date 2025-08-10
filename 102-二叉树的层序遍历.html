@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // var levelOrder = function (root) {
+        //     if (!root) return []
+        //     const queue = [], res = []
+        //     let levelQueue = [], curLevelCount = 1
+        //     let node, nextLevelCount = 0
+        //     queue.push(root)
+        //     debugger
+        //     while (queue.length > 0) {
+        //         node = queue.shift()
+        //         if (curLevelCount === 0) {
+        //             curLevelCount = nextLevelCount
+        //             nextLevelCount = 0
+        //             res.push(levelQueue)
+        //             levelQueue = []
+        //         }
+        //         curLevelCount--
+        //         if (node.left) {
+        //             queue.push(node.left)
+        //             nextLevelCount++
+        //         }
+        //         if (node.right) {
+        //             queue.push(node.right)
+        //             nextLevelCount++
+        //         }
+        //         levelQueue.push(node.val)
+        //     }
+        //     return res
+        // };
+
+        var levelOrder = function (root) {
+            const res = [], queue = []
+            queue.push(root)
+            let curNodeCount, node
+            // debugger
+            while (queue.length > 0) {
+                curNodeCount = queue.length
+                res.push([])
+                for (let i = 0; i < curNodeCount; i++) {
+                    node = queue.shift()
+                    res[res.length - 1].push(node.val)
+                    if (node.left) queue.push(node.left)
+                    if (node.right) queue.push(node.right)
+                }
+            }
+            return res
+        };
+
+        function TreeNode(val, left, right) {
+            this.val = (val === undefined ? 0 : val)
+            this.left = (left === undefined ? null : left)
+            this.right = (right === undefined ? null : right)
+        }
+
+        const node15 = new TreeNode(15)
+        const node7 = new TreeNode(7)
+        const node9 = new TreeNode(9)
+        const node20 = new TreeNode(20, node15, node7)
+        const node3 = new TreeNode(3, node9, node20)
+        console.log(levelOrder(node3));
+
+    </script>
+</body>
+
+</html>

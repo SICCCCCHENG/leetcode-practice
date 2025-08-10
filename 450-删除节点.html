@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        /*  var deleteNode = function (root, key) {
+             let pre
+             if (root === null || root.val === key) return null
+             const del = (node, key) => {
+                 if (node === null) return
+                 if (node.id === key) { // 找到
+                     debugger
+                     if (node.left === null && node.right === null) { // 为叶子节点
+                         if (pre.left === node) {
+                             pre.left = null
+                         } else {
+                             pre.right = null
+                         }
+                         return
+                     } else if (node.left === null || node.right === null) { // 待删除有 一个叶子节点
+                         if (pre.left === node) {
+                             if (node.left) {
+                                 pre.left = node.left
+                                 node.left = null
+                             } else {
+                                 pre.left = node.right
+                                 node.right = null
+                             }
+                         } else {
+                             if (node.left) {
+                                 pre.right = node.left
+                                 node.left = null
+                             } else {
+                                 pre.right = node.right
+                                 node.right = null
+                             }
+                         }
+                         return
+                     } else { // 含有两个子节点的节点 (以查找 待删除节点 左字节点最大值为例)
+                         let tempNode = node.left
+                         pre = node
+                         while (tempNode.right) {
+                             pre = tempNode
+                             tempNode = tempNode.right
+                         }
+                         // 值替换
+                         node.val = tempNode.val
+                         if (tempNode.left === null && tempNode.right === null) { // 补位节点为叶子节点
+                             if (pre.left === tempNode) {
+                                 pre.left = null
+                             } else {
+                                 pre.right = null
+                             }
+                         } else { // 补位节点含有一个左子节点
+                             pre.left = tempNode.left
+                             tempNode.left = null
+                         }
+                         return
+                     }
+                 }
+                 pre = node
+                 if (key < node.val) {
+                     del(node.left, key)
+                 } else {
+                     del(node.right, key)
+                 }
+             }
+             del(root, key)
+             return root
+         };
+  */
+
+        var deleteNode = function (root, key) {
+            if (!root) return null
+            let pre = null, tempNode = root
+            while (tempNode) {
+                if (tempNode.val === key) { // 找到
+                    break
+                }
+                pre = tempNode
+                if (tempNode.val > key) {
+                    tempNode = tempNode.left
+                } else {
+                    tempNode = tempNode.right
+                }
+            }
+            debugger
+            if (tempNode.left === null && tempNode.right === null) { // 为叶子节点
+                if (pre.left === tempNode) {
+                    pre.left = null
+                } else {
+                    pre.right = null
+                }
+            } else if (tempNode.left === null || tempNode.right === null) {
+                if (pre.left === tempNode) {
+                    if (tempNode.left) {
+                        pre.left = tempNode.left
+                        tempNode.left = null
+                    } else {
+                        pre.left = tempNode.right
+                        tempNode.right = null
+                    }
+                } else {
+                    if (tempNode.left) {
+                        pre.right = tempNode.left
+                        tempNode.left = null
+                    } else {
+                        pre.right = tempNode.right
+                        tempNode.right = null
+                    }
+                }
+            } else {  // 有左右子节点
+                let target = tempNode.right
+                pre = tempNode
+                while (target.left) {
+                    pre = target
+                    target = target.left
+                }
+                // 进行值替换
+                tempNode.val = target.val
+                if (target.right === null) {
+                    if (pre.right === target) {
+                        pre.right = null
+                    } else {
+                        pre.left = null
+                    }
+                } else {
+                    if (pre.right === target) {
+                        pre.right = target.right
+                    } else {
+                        pre.left = target.right
+                    }
+                }
+            }
+            return root
+        };
+
+
+        function TreeNode(val, left, right) {
+            this.val = (val === undefined ? 0 : val)
+            this.left = (left === undefined ? null : left)
+            this.right = (right === undefined ? null : right)
+        }
+
+        const node2 = new TreeNode(2)
+        const node4 = new TreeNode(4)
+        const node7 = new TreeNode(7)
+        const node3 = new TreeNode(3, node2, node4)
+        const node6 = new TreeNode(6, null, node7)
+        const root = new TreeNode(5, node3, node6)
+
+        // console.log(node2);
+        // console.log(node4);
+
+        // console.log(root);
+        deleteNode(root, 3)
+        console.log(root);
+    </script>
+</body>
+
+</html>

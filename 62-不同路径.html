@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var uniquePaths = function (m, n) {
+            const dp = new Array(n).fill(0)
+            // 初始化
+            dp[0] = 1
+            debugger
+            for (let i = 0; i < m; i++) {
+                for (let j = 0; j < n; j++) {
+                    dp[j] = (j - 1 >= 0 ? dp[j - 1] : 0) + dp[j]
+                }
+            }
+            return dp[n - 1]
+        };
+
+        uniquePaths(3, 7)
+    </script>
+</body>
+
+</html>

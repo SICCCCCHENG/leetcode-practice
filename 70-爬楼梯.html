@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        var climbStairs = function (n) {
+            let round = Math.floor(n / 2) + 1
+            const flag = n % 2
+            round = flag ? round - 1 : round - 2
+            let total = flag ? 1 : 2
+            const NF = factorial(n)
+            let num
+            debugger
+            for (let i = 1; i <= round; i++) {
+                num = i + (n - 2 * i)
+                total += NF / (factorial(i) * factorial(num - i))
+            }
+            return total
+        };
+        const factorial = (n) => {
+            if (n === 1) return 1
+            return n * factorial(n - 1)
+        }
+        console.log(climbStairs(3));
+
+    </script>
+</body>
+
+</html>

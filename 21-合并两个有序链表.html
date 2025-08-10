@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function ListNode(val, next) {
+            this.val = (val === undefined ? 0 : val)
+            this.next = (next === undefined ? null : next)
+        }
+        var mergeTwoLists = function (list1, list2) {
+            if (list1 === null) return list2
+            if (list2 === null) return list1
+            let tempNode1 = list1, tempNode2 = list2
+            const head = new ListNode()
+            let movingNode = head
+            debugger
+            while (tempNode1 !== null && tempNode2 !== null) {
+                if (tempNode1.val > tempNode2.val) {
+                    tempNode2 = tempNode2.next
+                    movingNode.next = tempNode2
+                    movingNode = movingNode.next
+                } else {
+                    tempNode1 = tempNode1.next
+                    movingNode.next = tempNode1
+                    movingNode = movingNode.next
+                }
+            }
+            movingNode.next = tempNode1 === null ? tempNode2 : tempNode1
+            return head.next
+        };
+        console.log(mergeTwoLists(
+            new ListNode(1, new ListNode(2, new ListNode(4, null))),
+            new ListNode(1, new ListNode(3, new ListNode(4, null)))
+        ));
+    </script>
+</body>
+
+</html>

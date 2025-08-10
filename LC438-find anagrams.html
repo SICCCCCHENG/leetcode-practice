@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 
+        示例 1:
+        输入: s = "cbaebabacd", p = "abc"
+        输出: [0,6]
+        解释:
+        起始索引等于 0 的子串是 "cba", 它是 "abc" 的异位词。
+        起始索引等于 6 的子串是 "bac", 它是 "abc" 的异位词。
+        
+        示例 2:
+        输入: s = "abab", p = "ab"
+        输出: [0,1,2]
+        解释:
+        起始索引等于 0 的子串是 "ab", 它是 "ab" 的异位词。
+        起始索引等于 1 的子串是 "ba", 它是 "ab" 的异位词。
+        起始索引等于 2 的子串是 "ab", 它是 "ab" 的异位词。
+        */
+
+        // const map = new Map('abc').fill(false)
+        // console.log(map);
+
+
+        /* function findAnagrams(s, p) {
+            const sLength = s.length
+            const pLength = p.length
+            const sArr = new Array(26).fill(0)
+            const pArr = new Array(26).fill(0)
+            const res = []
+            for (let i = 0; i < pLength; i++) {
+                pArr[p.charCodeAt(i) - 97]++ // 将字符串p用长度为26的数组表示
+                sArr[s.charCodeAt(i) - 97]++ // 将字符串s前pLength个字母用长度为26的数组表示
+            }
+            if (pArr.toString() === sArr.toString()) {
+                res.push(0)
+            }
+            for (let i = pLength; i < sLength; i++) {
+                // sArr[s.charAt(i - pLength).charCodeAt() - 97]--
+                // sArr[s.charAt(i).charCodeAt() - 97]++
+                sArr[s.charCodeAt(i - pLength) - 97]--
+                sArr[s.charCodeAt(i) - 97]++
+                if (pArr.toString() === sArr.toString()) {
+                    res.push(i - pLength + 1)
+                }
+            }
+            return res
+        }
+
+        console.log(findAnagrams("cbaebabacd", "abc"));
+        console.log(findAnagrams("baa", "aa")); */
+        // console.log('b' - 'a');
+
+        /* function findAnagrams(s, p) {
+            let res = []
+            let left = 0, right = 0
+            let map = new Map(), count = 0
+            for(let i = 0; i < p.length; i++){
+                map.set(p.charAt(i), false)
+            }
+
+            while(left <= right && right < s.length){
+                if(map.has(s.charAt(right))){
+                    if(map.get(s.charAt(right)) === false){
+                        map.set(s.charAt(right), true)
+                    }
+                }else{
+                    
+                }
+            }
+
+        }
+ */
+
+
+        var findAnagrams = function (s, p) {
+            const sLen = s.length, pLen = p.length;
+
+            if (sLen < pLen) {
+                return [];
+            }
+
+            const ans = [];
+            const count = Array(26).fill(0);
+            for (let i = 0; i < pLen; ++i) {
+                ++count[s[i].charCodeAt() - 'a'.charCodeAt()];
+                --count[p[i].charCodeAt() - 'a'.charCodeAt()];
+            }
+
+            let differ = 0;
+            for (let j = 0; j < 26; ++j) {
+                if (count[j] !== 0) {
+                    ++differ;
+                }
+            }
+
+            if (differ === 0) {
+                ans.push(0);
+            }
+
+            for (let i = 0; i < sLen - pLen; ++i) {
+                if (count[s[i].charCodeAt() - 'a'.charCodeAt()] === 1) {  // 窗口中字母 s[i] 的数量与字符串 p 中的数量从不同变得相同
+                    --differ;
+                } else if (count[s[i].charCodeAt() - 'a'.charCodeAt()] === 0) {  // 窗口中字母 s[i] 的数量与字符串 p 中的数量从相同变得不同
+                    ++differ;
+                }
+                --count[s[i].charCodeAt() - 'a'.charCodeAt()];
+
+                if (count[s[i + pLen].charCodeAt() - 'a'.charCodeAt()] === -1) {  // 窗口中字母 s[i+pLen] 的数量与字符串 p 中的数量从不同变得相同
+                    --differ;
+                } else if (count[s[i + pLen].charCodeAt() - 'a'.charCodeAt()] === 0) {  // 窗口中字母 s[i+pLen] 的数量与字符串 p 中的数量从相同变得不同
+                    ++differ;
+                }
+                ++count[s[i + pLen].charCodeAt() - 'a'.charCodeAt()];
+
+                if (differ === 0) {
+                    ans.push(i + 1);
+                }
+            }
+
+            return ans;
+        };
+        console.log(findAnagrams("ceeeeeebaebeeeabacd", "abc"));
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=`, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+
+        function TreeNode(val, left, right) {
+            this.val = val;
+            this.left = left
+            this.right = right
+        }
+
+        var lowestCommonAncestor1 = function (root, p, q) {
+            const helper = (node, p, q, flag, ans) => {
+                debugger
+                if (flag) return [ans, flag]
+                let res1, res2, flag1, flag2
+                if (node.left) [res1, flag1] = helper(node.left, p, q, false, ans)
+                if (node.right) [res2, flag2] = helper(node.right, p, q, false, ans)
+                if (flag1) {
+                    return [res1, flag1]
+                }
+                if (flag2) {
+                    return [res2, flag2]
+                }
+                if (res1 && res2) {
+                    if ((res1.val === p && res2.val === q) || (res1.val === q && res2.val === p)) {
+                        return [node, true]
+                    }
+                }
+                if (node.val === p.val) {
+                    if (res1 && res2 && (res1.val === q || res2.val === q)) {
+                        return [node, true]
+                    }
+                    return [node, false]
+                }
+                if (node.val === q.val) {
+                    if (res1 && res2 && (res1.val === p || res2.val === p)) {
+                        return [node, true]
+                    }
+                    return [node, false]
+                }
+                if (res1) return [res1, false]
+                if (res2) return [res2, false]
+                return [null, false]
+            }
+            return helper(root, p, q, false, null)[0]
+        };
+
+
+        var lowestCommonAncestor2 = function (root, p, q) {
+            if (!root) return null
+            if (root.val === p.val || root.val === q.val) return root
+            const left = lowestCommonAncestor(root.left, p, q)
+            const right = lowestCommonAncestor(root.right, p, q)
+            if (!left) return right
+            if (!right) return left
+            if (left && right) return root
+        };
+
+
+        // const node8 = new TreeNode(8)
+        // const node9 = new TreeNode(9)
+        // const node4 = new TreeNode(4, node8, node9)
+        // const node5 = new TreeNode(5)
+        // const node6 = new TreeNode(6)
+        // const node7 = new TreeNode(7)
+        // const node2 = new TreeNode(2, node4, node5)
+        // const node3 = new TreeNode(3, node6, node7)
+        // const node1 = new TreeNode(1, node2, node3)
+
+        // console.log(node1);
+
+        // const node21 = new TreeNode(2)
+        // const node22 = new TreeNode(1, null, node21)
+        // console.log(lowestCommonAncestor(node1, 8, 5));
+        // console.log(lowestCommonAncestor(node21, 2, 1));
+
+        var lowestCommonAncestor = function (root, p, q) {
+            debugger
+            if (!root) return root
+            if (root.val === p.val || root.val === q.val) return root
+            let rtn1, rtn2
+            if (root.val > p.val) {
+                rtn1 = lowestCommonAncestor(root.left, p, q)
+            } else {
+                rtn1 = lowestCommonAncestor(root.right, p, q)
+            }
+            if (root.val > q.val) {
+                rtn2 = lowestCommonAncestor(root.left, p, q)
+            } else {
+                rtn2 = lowestCommonAncestor(root.right, p, q)
+            }
+            if (!rtn1) return rtn2
+            if (!rtn2) return rtn1
+            if (rtn1 && rtn2) return root
+            return null
+        };
+
+        const node6 = new TreeNode(6)
+        const node7 = new TreeNode(7)
+        const node4 = new TreeNode(4)
+        const node0 = new TreeNode(0)
+        const node8 = new TreeNode(8)
+        const node2 = new TreeNode(2, node7, node4)
+        const node5 = new TreeNode(5, node6, node2)
+        const node1 = new TreeNode(1, node0, node8)
+        const node3 = new TreeNode(3, node5, node1)
+        // console.log(node3);
+
+        const node_0 = new TreeNode(0)
+        const node_3 = new TreeNode(3)
+        const node_5 = new TreeNode(5)
+        const node_7 = new TreeNode(7)
+        const node_9 = new TreeNode(9)
+
+        const node_4 = new TreeNode(4, node_3, node5)
+        const node_2 = new TreeNode(2, node_0, node_4)
+        const node_8 = new TreeNode(8, node_7, node_9)
+        const node_6 = new TreeNode(6, node_2, node_8)
+
+        console.log(lowestCommonAncestor(node_6, node_2, node_4));
+
+    </script>
+</body>
+
+</html>

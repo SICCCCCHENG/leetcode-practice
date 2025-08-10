@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        class Node {
+            constructor(parent, weight) {
+                this.parent = parent
+                this.weight = weight
+            }
+        }
+        var calcEquation = function (equations, values, queries) {
+            // const parent = new Array(26).fill(0).map((_, index) => index)
+            // 建立邻接表
+            const map = new Map()
+            // 设置根节点
+            // map.set(equations[0][1], new Node(equations[0][1], 1))
+            debugger
+            const length = equations.length
+            for (let i = 0; i < length; i++) {
+                // const [ele1, ele2] = removeDup(equations[i][0], equations[i][1])
+                union(equations[i][0], equations[i][1], values[i], map)
+            }
+            const res = []
+            for (let [ele1, ele2] of queries) {
+                // const [ele1, ele2] = removeDup(a, b)
+                if (!map.has(ele1) || !map.has(ele2)) {
+                    res.push(-1)
+                } else {
+                    const rootNode1 = find(ele1, map)
+                    const rootNode2 = find(ele2, map)
+                    // 没有交集
+                    if (rootNode1.parent !== rootNode2.parent) {
+                        res.push(-1)
+                    } else {
+                        res.push(rootNode1.weight / rootNode2.weight)
+                    }
+                }
+            }
+            return res
+        };
+
+        const find = (node, map) => {
+            if (!map.has(node)) return null
+            if (map.get(node).parent !== node) {
+                const { parent, weight } = find(map.get(node).parent, map)
+                map.get(node).parent = parent
+                map.get(node).weight = map.get(node).weight * weight
+            }
+            return map.get(node)
+        }
+        const union = (node1, node2, weight, map) => {
+            const root1 = find(node1, map)
+            const root2 = find(node2, map)
+            if (!root1 && !root2) {
+                map.set(node1, new Node(node2, weight))
+                map.set(node2, new Node(node2, 1)) // 自己作为根节点
+            } else if (root1 && !root2) {
+                // map.set(node1, new Node(node2, weight))
+                map.set(node2, new Node(node1, 1 / weight)) // 自己作为根节点
+            } else if (!root1 && root2) {
+                map.set(node1, new Node(node2, weight))
+            } else {
+                map.set(node1, new Node(node2, weight))
+            }
+        }
+        // 分数约分啊
+        const removeDup = (q1, q2) => {
+            if (q1.length === 1 && q2.length === 1) return [q1, q2]
+            // const dedup = []
+            // for (let i = 0; i < q1.length; i++) {
+            //     if (!q2.split('').includes(q1.charAt(i))) {
+            //         dedup.push(q1.charAt(i))
+            //         break
+            //     }
+            // }
+            // for (let i = 0; i < q2.length; i++) {
+            //     if (!q1.split('').includes(q2.charAt(i))) {
+            //         dedup.push(q2.charAt(i))
+            //         break
+            //     }
+            // }
+            const map1 = new Map()
+            const map2 = new Map()
+            // 分子
+            const numerator = []
+            // 分母
+            const denominator = []
+            for (let i = 0; i < q1.length; i++) {
+                if (!map1.has(q1.charAt(i))) {
+                    map1.set(q1.charAt(i), 1)
+                } else {
+                    map1.set(q1.charAt(i), map1.get(q1.charAt(i)) + 1)
+                }
+            }
+            for (let i = 0; i < q2.length; i++) {
+                if (!map2.has(q2.charAt(i))) {
+                    map2.set(q2.charAt(i), 1)
+                } else {
+                    map2.set(q2.charAt(i), map2.get(q2.charAt(i)) + 1)
+                }
+            }
+            for (const key of Object.keys(map1)) {
+                if (!map2.get(key) || map1.get(key) > map2.get(key)) {
+                    numerator.push(key)
+                    break
+                }
+            }
+            for (const key of Object.keys(map2)) {
+                if (!map1.get(key) || map2.get(key) > map1.get(key)) {
+                    denominator.push(key)
+                    break
+                }
+            }
+            return [numerator.length ? numerator.pop() : 1, denominator.length ? denominator.pop() : 1]
+        }
+        // console.log(calcEquation([["a", "b"], ["b", "c"], ["bc", "cd"]], [1.5, 2.5, 5.0], [["a", "c"], ["c", "b"], ["bc", "cd"], ["cd", "bc"]]));
+        // console.log(calcEquation([["a", "aa"]], [9.0], [["aa", "a"], ["aa", "aa"]]));
+        console.log(calcEquation([["a", "b"], ["b", "c"], ["d", "e"], ["a", "d"]], [1.0, 2.0, 3.0, 4.0], [["c", "e"]]));
+
+        // [["d", "f"], ["e", "g"], ["e", "k"], ["h", "a"], ["aaa", "k"], ["aaa", "i"], ["aa", "e"], ["aaa", "aa"], ["aaa", "ff"], ["bbb", "bb"], ["bb", "h"], ["bb", "i"], ["bb", "k"], ["aaa", "k"], ["k", "l"], ["x", "k"], ["l", "ll"]]
+        // [ 1.66667,       1.5,        2.5,      0.14286,      10.0,           8.0,        4.0,            1.0,            5.0,        0.33333,        7.0,        8.0,        10.0,       10.0,           1.1,        -1.0,       -1.0    ]
+        // [ 1.66667,       1.50000,    2.50000,  0.14286,      10.00000,       8.00000,    4.00000,        1.00000,        5.00000,    0.33333,        2.33333,    2.66667,    3.33333,    10.00000,       1.10000,    -1.00000,   11.00000]
+    </script>
+</body>
+
+</html>

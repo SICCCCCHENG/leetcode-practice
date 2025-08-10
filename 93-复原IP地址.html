@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var restoreIpAddresses = function (s) {
+            const length = s.length
+            const ans = [], res = []
+            let tempStr
+            const dfs = (n, level) => {
+                if (level === 5 && n === length) {
+                    ans.push(res.join('.'))
+                    return
+                }
+                if(level === 5 || n === length) return
+                if (+s[n] > 2) return
+                if (s[n] === '0') {
+                    res.push(s[n])
+                    dfs(n + 1, level + 1)
+                    res.pop()
+                    return
+                }
+                for (let i = n + 1; i <= length && i < n + 4; i++) {
+                    tempStr = s.substring(n, i)
+                    res.push(tempStr)
+                    dfs(i, level + 1)
+                    res.pop()
+                }
+            }
+            debugger
+            dfs(0, 1)
+            return ans
+        };
+        restoreIpAddresses("000256")
+    </script>
+</body>
+
+</html>

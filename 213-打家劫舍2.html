@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var rob = function (nums) {
+            const length = nums.length
+            if (length === 1) return nums[0]
+            if (length === 2) return Math.max(nums[0], nums[1])
+
+            debugger
+            const helper = (start, end) => {
+                let dp = []
+                dp[start] = nums[start]
+                dp[start + 1] = Math.max(nums[start], nums[start + 1])
+                for (let i = start + 2; i <= end; i++) {
+                    dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i])
+                }
+                return dp[end]
+            }
+
+            return Math.max(helper(0, length - 2), helper(1, length - 1))
+        };
+
+
+        rob([1, 2, 3, 1])
+
+    </script>
+</body>
+
+</html>

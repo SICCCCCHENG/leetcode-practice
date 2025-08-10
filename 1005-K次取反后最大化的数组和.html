@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var largestSumAfterKNegations = function (nums, k) {
+            const length = nums.length
+            nums.sort((a, b) => a - b)
+            let index = 0, ans = 0
+            debugger
+            while (k && nums[index] < 0 && index < length) {
+                nums[index] *= -1
+                index++
+                k--
+            }
+
+            if (nums[index] !== 0 && k % 2) { // 如果还剩奇数次
+                if (index > 0 && nums[index] > nums[index - 1]) {
+                    nums[index - 1] * -1
+                } else {
+                    nums[index] * -1
+                }
+            }
+            for (let i = 0; i < length; i++) {
+                ans += nums[i]
+            }
+            return ans
+        };
+
+        largestSumAfterKNegations([-4,-2,-3], 4)
+    </script>
+
+</body>
+
+</html>

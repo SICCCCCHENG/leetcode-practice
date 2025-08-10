@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var diffWaysToCompute = function (expression) {
+            const strLength = expression.length
+            const expArr = []
+            let str = ''
+            // 预处理
+            for (let i = 0; i < strLength; i++) {
+                if (expression[i] === '+' || expression[i] === '-' || expression[i] === '*') {
+                    expArr.push(str)
+                    expArr.push(expression[i])
+                    str = ''
+                } else {
+                    str += expression[i]
+                }
+            }
+            expArr.push(str)
+
+            const length = expArr.length
+            const dp = new Map()
+
+            const helper = (start, end) => {
+                if (start === end) {
+                    rtn = [+expArr[start]]
+                    dp.set(start, rtn)
+                    return rtn
+                }
+                if (dp.has(start + '-' + end)) {
+                    return dp.get(start + '-' + end)
+                }
+                const arrRtn = []
+                for (let i = start; i <= end; i++) {
+                    if (expArr[i] === '+' || expArr[i] === '-' || expArr[i] === '*') {
+                        const left = helper(start, i - 1)
+                        const right = helper(i + 1, end)
+                        const temp = cartesianProduct(left, right, expArr[i])
+                        arrRtn.push(...temp)
+                    }
+                }
+                dp.set(start + '-' + end, arrRtn)
+                return arrRtn
+            }
+            return helper(0, expArr.length - 1)
+        };
+
+        const cartesianProduct = (left, right, sign) => {
+            const rtn = []
+            for (let m = 0; m < left.length; m++) {
+                for (let n = 0; n < right.length; n++) {
+                    rtn.push(
+                        operate(left[m], right[n], sign)
+                    )
+                }
+            }
+            return rtn
+        }
+
+        const operate = (num1, num2, sign) => {
+            return sign === '+' ? num1 + num2 : 
+                    sign === '-' ? num1 - num2 : 
+                    num1 * num2
+        }
+
+        diffWaysToCompute("2-1-1")
+    </script>
+</body>
+
+</html>

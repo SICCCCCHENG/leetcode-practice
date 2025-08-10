@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function Node(key, val, pre = null, next = null) {
+            this.key = key
+            this.val = val
+            this.pre = pre
+            this.next = next
+        }
+
+        /**
+         * @param {number} capacity
+         */
+        var LRUCache = function (capacity) {
+            this.map = new Map()
+            this.dummy = new Node(-1)
+            this.latest = this.dummy
+            this.cap = capacity
+        };
+
+        /** 
+         * @param {number} key
+         * @return {number}
+         */
+        LRUCache.prototype.get = function (key) {
+            const node = this.map.get(key)
+            debugger
+            if (node) {
+                if (this.latest !== node) {
+                    node.pre.next = node.next
+                    node.next.pre = node.pre
+                    this.latest.next = node
+                    node.pre = this.latest
+                    node.next = null
+                    this.latest = node
+                }
+                return node.val
+            } else {
+                return -1
+            }
+        };
+
+        /** 
+         * @param {number} key 
+         * @param {number} value
+         * @return {void}
+         */
+        LRUCache.prototype.put = function (key, value) {
+            const node = this.map.get(key)
+            debugger
+            if (node) {  // 如果存在
+                node.val = value
+                if (this.latest !== node) {
+                    node.pre.next = node.next
+                    node.next.pre = node.pre
+                    this.latest.next = node
+                    node.pre = this.latest
+                    node.next = null
+                    this.latest = node
+                }
+            } else {
+                // 在链表末尾添加
+                const newNode = new Node(key, value, this.latest)
+                this.map.set(key, newNode)
+                this.latest.next = newNode
+                this.latest = newNode
+                if (this.cap < this.map.size) { // 已经满了
+                    // 删除map中的最久未使用的值
+                    this.map.delete(this.dummy.next.key)
+                    // 删除链表头节点
+                    this.dummy.next.next.pre = this.dummy
+                    this.dummy.next = this.dummy.next.next
+                }
+            }
+        };
+
+        const lRUCache = new LRUCache(3);
+        lRUCache.put(1, 1); // 缓存是 {1=1}
+        lRUCache.put(2, 2); // 缓存是 {1=1, 2=2}
+        lRUCache.put(3, 3); // 缓存是 {1=1, 2=2, 3=3}
+        lRUCache.put(4, 4); // 缓存是 {2=2, 3=3, 4=4}
+        console.log(lRUCache.get(4));    // 返回 4 缓存是 {2=2, 3=3, 4=4}
+        console.log(lRUCache.get(3));    // 返回 3 缓存是 {2=2, 4=4, 3=3}
+        console.log(lRUCache.get(2));    // 返回 2 缓存是 {4=4, 3=3, 2=2}
+        console.log(lRUCache.get(1));    // 返回 -1 缓存是 {4=4, 3=3, 2=2}
+        lRUCache.put(5, 5); // 缓存是 {3=3, 2=2, 5=5}
+        console.log(lRUCache.get(1));    // 返回 -1
+        console.log(lRUCache.get(2));    // 返回 2
+        console.log(lRUCache.get(3));    // 返回 3
+        console.log(lRUCache.get(4));    // 返回 -1
+        console.log(lRUCache.get(5));    // 返回 5
+
+
+        // const lRUCache = new LRUCache(2);
+        // lRUCache.put(2, 1); // 缓存是 {2=1}
+        // lRUCache.put(1, 1); // 缓存是 {2=1, 1=1}
+        // lRUCache.put(2, 3); // 缓存是 {1=1, 2=3}
+        // lRUCache.put(4, 1); // 缓存是 {2=3, 4=1}
+        // console.log(lRUCache.get(1));    // 返回 -1
+        // console.log(lRUCache.get(2));    // 返回 3
+
+        // const lRUCache = new LRUCache(2);
+        // lRUCache.put(1, 1); // 缓存是 {1=1}
+        // lRUCache.put(2, 2); // 缓存是 {1=1, 2=2}
+        // console.log(lRUCache.get(1));    // 返回 1
+        // lRUCache.put(3, 3); // 该操作会使得关键字 2 作废，缓存是 {1=1, 3=3}
+        // console.log(lRUCache.get(2));    // 返回 -1 (未找到)
+        // lRUCache.put(4, 4); // 该操作会使得关键字 1 作废，缓存是 {4=4, 3=3}
+        // console.log(lRUCache.get(1));    // 返回 -1 (未找到)
+        // console.log(lRUCache.get(3));    // 返回 3
+        // console.log(lRUCache.get(4));    // 返回 4
+
+
+    </script>
+</body>
+
+</html>

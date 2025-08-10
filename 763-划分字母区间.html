@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        var partitionLabels = function (s) {
+            const length = s.length
+            const map = {}
+            let size = 0, end = 0
+            const ans = []
+            // 初始化哈希表
+            for (let i = 0; i < length; i++) {
+                map[s[i]] = i
+            }
+            debugger
+            for (let i = 0; i < length; i++) {
+                if (map[s[i]] > end) {
+                    end = map[s[i]]
+                }
+                size++
+                if (i === end) {
+                    ans.push(size)
+                    size = 0
+                }
+            }
+            return ans
+        };
+
+        partitionLabels("ababcbacadefegdehijhklij")
+    </script>
+</body>
+
+</html>

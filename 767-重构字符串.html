@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var reorganizeString = function (s) {
+            const arr = s.split('')
+            const length = arr.length
+            const map = {}
+            let ans = new Array(length).fill('')
+            for (let i = 0; i < length; i++) {
+                if (!map[s[i]]) {
+                    map[s[i]] = 1
+                } else {
+                    map[s[i]]++
+                }
+            }
+            const keyArr = Object.keys(map)
+            debugger
+            keyArr.sort((a, b) => map[b] - map[a])  // 只需要排一次序
+            let index = 0
+            for (let i = 0; i < keyArr.length; i++) {
+                while (map[keyArr[i]] !== 0) {
+                    ans[index] = keyArr[i]
+                    if (index > 0 && ans[index - 1] === ans[index]) return ''
+                    map[keyArr[i]]--
+                    index += 2
+                    if (index >= length) {
+                        index = 1
+                    }
+                }
+            }
+            return ans.join('')
+        };
+        reorganizeString("aab")
+    </script>
+</body>
+
+</html>

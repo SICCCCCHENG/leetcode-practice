@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var coinChange = function (coins, amount) {
+            const length = coins.length
+            coins.sort((a, b) => b - a)
+            let ans = 0, index = 0
+            debugger
+            while (amount > 0 && index < length) {
+                if (coins[index] <= amount) {
+                    amount -= coins[index]
+                    ans++
+                    if (amount === 0) {
+                        return ans
+                    }
+                } else {
+                    index++
+                }
+            }
+            return amount === 0 ? 0 : -1
+        };
+
+        coinChange([186, 419, 83, 408], 6249)
+    </script>
+</body>
+
+</html>

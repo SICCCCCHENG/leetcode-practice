@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var maxProduct = function (nums) {
+            const length = nums.length
+            let max = nums[0]
+            let min = nums[0]
+            let rtn = -Infinity
+            debugger
+            for (let i = 1; i < length; i++) {
+                max = Math.max(max * nums[i], min * nums[i], nums[i])
+                min = Math.min(max * nums[i], min * nums[i], nums[i])
+                rtn = Math.max(rtn, max)
+            }
+            return rtn
+        };
+        maxProduct([1, 0, -5, 2, 3, -8, -9])
+    </script>
+</body>
+
+</html>

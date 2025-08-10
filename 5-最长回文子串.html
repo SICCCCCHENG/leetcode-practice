@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        var longestPalindrome2 = function (s) {
+            const length = s.length
+            const dp = new Array(length).fill(0).map(() => new Array(length).fill(false))
+            let left = 0, right = 0
+            debugger
+            for (let i = 0; i < length; i++) {
+                for (let j = 0; j < i; j++) {
+                    dp[i][j] = ((i - 1) - (j + 1) <= 0) || dp[i - 1][j + 1]
+                    if (dp[i][j] && (i - j > right - left)) {
+                        left = j
+                        right = i
+                    }
+                }
+            }
+            return s.substring(left, right + 1)
+        };
+        // 中心扩散法
+        var longestPalindrome3 = function (s) {
+            const length = s.length
+            let left = 0, right = 0, max = 1
+
+            const helper = (start, end) => {
+                while (start >= 0 && end < length && s[start] === s[end]) {
+                    start--
+                    end++
+                }
+                return [start + 1, end - 1]
+            }
+
+            debugger
+
+            for (let i = 1; i < length - 1; i++) {
+                let [start, end] = helper(i, i)
+                if (end - start > max) {
+                    left = start
+                    right = end
+                }
+                [start, end] = helper(i, i + 1)
+                if (end - start > max) {
+                    left = start
+                    right = end
+                }
+            }
+            return s.substring(left, right + 1)
+        };
+
+        var longestPalindrome4 = function (s) {
+            const length = s.length
+            let left = 0, right = 0, max = 0
+
+            const helper = (start, end) => {
+                while (start >= 0 && end < length && s[start] === s[end]) {
+                    start--
+                    end++
+                }
+                return [start + 1, end - 1]
+            }
+
+            debugger
+
+            for (let i = 0; i < length; i++) {
+                let [start, end] = helper(i, i)
+                if (end - start > max) {
+                    left = start
+                    right = end
+                }
+                [start, end] = helper(i, i + 1)
+                if (end - start >= max) {
+                    left = start
+                    right = end
+                    max = end - start
+                }
+            }
+            return s.substring(left, right + 1)
+        };
+
+        var longestPalindrome = function (s) {
+            const length = s.length
+            const dp = new Array(length).fill(0).map(() => new Array(length).fill(false))
+            let left = 0, right = 0
+            debugger
+            for (let i = 0; i < length; i++) {
+                for (let j = 0; j <= i; j++) {
+                    if (i - j <= 2) {
+                        dp[i][j] = s[i] === s[j]
+                    } else {
+                        const temp = dp[i - 1][j + 1]
+                        dp[i][j] = (s[i] === s[j]) && temp
+                    }
+                    if (dp[i][j] && ((i - j) > (right - left))) {
+                        left = j
+                        right = i
+                    }
+                }
+            }
+            return s.substring(left, right + 1)
+        };
+
+        console.log(longestPalindrome("aacabdkacaa")); 
+    </script>
+</body>
+
+</html>

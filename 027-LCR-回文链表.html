@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        function ListNode(val, next) {
+            this.val = (val === undefined ? 0 : val)
+            this.next = (next === undefined ? null : next)
+        }
+
+        var isPalindrome = function (head) {
+            debugger
+            const dummy = new ListNode(-1, head)
+            let slow = dummy, fast = dummy, count = 0
+            while (fast.next) {
+                count++
+                fast = fast.next
+            }
+            if (count === 1) return true
+            count = Math.ceil(count / 2)
+            while (count) {
+                slow = slow.next
+                count--
+            }
+            let cur, next
+            // 链表反转重写 fk
+            cur = slow.next.next
+            next = cur && cur.next ? cur.next : null
+            slow.next.next = null
+            while (slow.next !== fast && cur) {
+                cur.next = slow.next
+                slow.next = cur
+                cur = next
+            }
+            slow = head
+            while (fast) {
+                if (fast.val !== slow.val) return false
+                fast = fast.next
+                slow = slow.next
+            }
+            return true
+        };
+
+        isPalindrome(
+            new ListNode(4,
+            new ListNode(4, 
+            new ListNode(3, 
+            new ListNode(6, 
+            new ListNode(0, 
+            new ListNode(7, 
+            new ListNode(8,  
+            new ListNode(7,  
+            new ListNode(4,  
+            new ListNode(2,  
+            new ListNode(3,  
+            new ListNode(5, 
+            new ListNode(4, 
+            new ListNode(3, 
+            new ListNode(5, 
+            new ListNode(1, 
+            new ListNode(4, 
+            new ListNode(6, 
+            new ListNode(9, 
+            new ListNode(2, 
+            new ListNode(9, 
+            new ListNode(9, 
+            new ListNode(0, null))))))))))))))))))))))))
+    </script>
+</body>
+
+</html>

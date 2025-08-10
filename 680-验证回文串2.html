@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        var validPalindrome = function (s) {
+            const length = s.length
+            let left = 0, right = length - 1
+            let pre = false
+            while (left <= right) {
+                if (s[left] === s[right]) {
+                    left++
+                    right--
+                } else {
+                    if (pre) return false
+                    if (s[left + 1] === s[right]) {
+                        left++
+                    } else if (s[left] === s[right - 1]) {
+                        right--
+                    } else {
+                        return false
+                    }
+                    pre = true
+                }
+            }
+            return true
+        };
+        validPalindrome("aguokepatgbnvfqmgmlcupuufxoohdfpgjdmysgvhmvffcnqxjjxqncffvmhvgsymdjgpfdhooxfuupuculmgmqfvnbgtapekouga")
+
+    </script>
+</body>
+
+</html>

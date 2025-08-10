@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // should be reversed order
+        var minimumTotal = function (triangle) {
+            const length = triangle.length
+            debugger
+            for (let i = 1; i < length; i++) {
+                for (let j = 0; j <= i; j++) {
+                    triangle[i][j] = Math.min(
+                        (j - 1 < 0 ? Infinity : triangle[i - 1][j - 1]),
+                        triangle[i - 1][j]
+                    ) + triangle[i][j]
+                }
+            }
+
+            return Math.min(...triangle[length - 1])
+        };
+        minimumTotal([[2], [3, 4], [6, 5, 7], [4, 1, 8, 3]])
+    </script>
+</body>
+
+</html>

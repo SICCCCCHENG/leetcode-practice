@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var canPlaceFlowers = function (flowerbed, n) {
+            const length = flowerbed.length
+            let count = 0
+            let left
+            debugger
+            for (let i = 0; i <= length; i++) {
+                if (flowerbed[i] === 1 || i === length) {
+                    if (left === undefined || i === length) {
+                        n -= Math.floor(count / 2)
+                    } else {
+                        n -= count >= 3 ? Math.floor((count - 1) / 2) : 0
+                    }
+                    if (n <= 0) return true
+                    count = 0
+                    left = i
+                }
+                count++
+            }
+            return false
+        };
+
+        canPlaceFlowers([1, 0, 0, 0, 0, 1], 2)
+    </script>
+</body>
+
+</html>

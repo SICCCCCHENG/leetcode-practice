@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 并查集 求解
+        var findCircleNum = function (isConnected) {
+            console.log(isConnected[0][1]);
+            const length = isConnected.length
+            const rootArr = new Array(length).fill(0).map((_, index) => index)
+            for (let i = 0; i < length - 1; i++) {
+                for (let j = i + 1; j < length; j++) {
+                    debugger
+                    if (isConnected[i][j] === 1) {
+                        union(i, j, rootArr)
+                    }
+                }
+            }
+            return new Set(rootArr).size
+        };
+
+
+        const find = (node, rootArr) => {
+            if (node !== rootArr[node]) {
+                rootArr[node] = find(rootArr[node], rootArr)
+            }
+            return rootArr[node]
+        }
+
+        const union = (node1, node2, rootArr) => {
+            // debugger
+            const root1 = find(node1, rootArr)
+            const root2 = find(node2, rootArr)
+            if (root1 !== root2) {
+                rootArr[root1] = root2
+            }
+        }
+
+        console.log(findCircleNum([[1, 0, 0, 1], [0, 1, 1, 0], [0, 1, 1, 1], [1, 0, 1, 1]])); 
+    </script>
+</body>
+
+</html>

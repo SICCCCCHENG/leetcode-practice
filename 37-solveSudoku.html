@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var solveSudoku = function (board) {
+            const taken = new Array(10).fill(0).map(() => new Array(3).fill(0).map(() => new Set()))
+            let ele
+            const ans = []
+            // 初始化 taken
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    ele = Number(board[i][j])
+                    if (board[i][j] !== '.') {
+                        // row
+                        taken[ele][0].add(i)
+                        // col
+                        taken[ele][1].add(j)
+                        // cell
+                        taken[ele][2].add(decideCell(i, j))
+                    }
+                }
+            }
+            debugger
+            const backTrack = (row, col) => {
+                if (row === 9) {
+                    ans.push(...board.map((item) => [...item]))
+                    return
+                }
+                if (board[row][col] !== '.') {
+                    if (col === 8) {
+                        backTrack(row + 1, 0)
+                    } else {
+                        backTrack(row, col + 1)
+                    }
+                    return
+                }
+                for (let num = 1; num <= 9; num++) { // 每个空格尝试不同的数字
+                    if (!taken[num][0].has(row) && !taken[num][1].has(col) && !taken[num][2].has(decideCell(row, col))) {
+                        board[row][col] = String(num)
+                        taken[num][0].add(row)
+                        taken[num][1].add(col)
+                        taken[num][2].add(decideCell(row, col))
+                        if (col === 8) {
+                            backTrack(row + 1, 0)
+                        } else {
+                            backTrack(row, col + 1)
+                        }
+                        // 还原
+                        board[row][col] = '.'
+                        taken[num][0].delete(row)
+                        taken[num][1].delete(col)
+                        taken[num][2].delete(decideCell(row, col))
+                    }
+                }
+            }
+            backTrack(0, 0)
+            return ans
+        };
+
+        const decideCell = (i, j) => {
+            if (j <= 2) {
+                return i <= 2 ? 1 : i <= 5 ? 2 : 3
+            } else if (j <= 5) {
+                return i <= 2 ? 4 : i <= 5 ? 5 : 6
+            } else {
+                return i <= 2 ? 7 : i <= 5 ? 8 : 9
+            }
+        }
+        console.log(
+            JSON.stringify(solveSudoku([["5", "3", ".", ".", "7", ".", ".", ".", "."], ["6", ".", ".", "1", "9", "5", ".", ".", "."], [".", "9", "8", ".", ".", ".", ".", "6", "."], ["8", ".", ".", ".", "6", ".", ".", ".", "3"], ["4", ".", ".", "8", ".", "3", ".", ".", "1"], ["7", ".", ".", ".", "2", ".", ".", ".", "6"], [".", "6", ".", ".", ".", ".", "2", "8", "."], [".", ".", ".", "4", "1", "9", ".", ".", "5"], [".", ".", ".", ".", "8", ".", ".", "7", "9"]])), 2, undefined
+        )
+
+
+    </script>
+</body>
+
+</html>

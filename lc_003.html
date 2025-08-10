@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        var countBits = function (n) {
+            const dp = new Array(n + 1).fill(0)
+            let power = 0
+            dp[0] = 0, dp[1] = 1
+            debugger
+            for (let i = 2; i <= n; i++) {
+                if (i >= Math.pow(2, power + 1)) {
+                    power++
+                }
+                dp[n] = 1 + dp[i - Math.pow(2, power)]
+            }
+            return dp
+        };
+        countBits(8)
+    </script>
+</body>
+
+</html>

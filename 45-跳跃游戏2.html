@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        function jump(nums) {
+            let position = nums.length - 1;
+            let steps = 0;
+            debugger
+            while (position > 0) {
+                for (let i = 0; i < position; i++) {
+                    if (i + nums[i] >= position) {
+                        position = i;
+                        steps++;
+                        break;
+                    }
+                }
+            }
+            return steps;
+        }
+        console.log(jump([2, 3, 0, 1, 4]));
+    </script>
+</body>
+
+</html>

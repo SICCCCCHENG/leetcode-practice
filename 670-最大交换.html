@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var maximumSwap = function (num) {
+            const numStr = String(num)
+            const length = numStr.length
+            const originStr = numStr.split('')
+            const sortedStr = numStr.split('').sort((a, b) => +b - +a)
+            let i, temp
+            debugger
+            for (i = 0; i < length; i++) {
+                if (originStr[i] !== sortedStr[i]) {
+                    temp = originStr[i]
+                    originStr[i] = sortedStr[i]
+                    break
+                }
+            }
+            for (let j = length - 1; j > i; j--) {
+                if (originStr[j] === originStr[i]) {
+                    originStr[j] = temp
+                    break
+                }
+            }
+            return originStr.join('')
+        };
+        // maximumSwap(2736)
+        maximumSwap(1993)
+    </script>
+</body>
+
+</html>

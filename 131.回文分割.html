@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var partition = function (s) {
+            const ans = []
+            const path = []
+            const length = s.length
+            const dfs = (start) => {
+                if (start === length) {
+                    ans.push([...path])
+                }
+                for (let i = start; i < length; i++) {
+                    if (isPalindrome(start, i, s)) {
+                        path.push(s.substring(start, i+1))
+                        dfs(i + 1)
+                        path.pop()
+                    }
+                }
+            }
+            debugger
+            dfs(0)
+            return ans
+        };
+
+        const isPalindrome = (start, end, s) => {
+            while (start <= end) {
+                if (s[start] !== s[end]) return false
+                start++
+                end--
+            }
+            return true
+        }
+        partition('aab')
+    </script>
+</body>
+
+</html>

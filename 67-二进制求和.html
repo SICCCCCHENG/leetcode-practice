@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        var addBinary = function (a, b) {
+            const arr1 = a.split('').reverse()
+            const arr2 = b.split('').reverse()
+            let carry = 0
+            let resArr = [], tempA, tempB
+            for (let i = 0; i < arr1.length || i < arr2.length; i++) {
+                tempA = arr1[i] ? Number(arr1[i]) : 0
+                tempB = arr2[i] ? Number(arr2[i]) : 0
+                if ((tempA + tempB + carry) > 1) {
+                    carry = 1
+                } else {
+                    carry = 0
+                }
+                resArr[i] = (tempA + tempB + carry) % 2
+            }
+            if (carry === 1)
+                resArr.push(1)
+            return resArr.reverse().join('')
+        };
+
+        console.log(addBinary('1010', '1011'))
+    </script>
+</body>
+
+</html>

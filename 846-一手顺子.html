@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var isNStraightHand = function (hand, groupSize) {
+            const length = hand.length
+            const map = {}
+            for (let i = 0; i < length; i++) {
+                map[hand[i]] = (map[hand[i]] || 0) + 1
+            }
+            hand.sort((a, b) => a - b)
+            debugger
+            for (let i = 0; i < length; i++) {
+                while (map[hand[i]]) {
+                    if (!roundCheck(map, hand[i], groupSize)) return false
+                }
+            }
+            return true
+        };
+
+        const roundCheck = (map, start, size) => {
+            for (let i = 0; i < size; i++) {
+                if (!map[start]) return false
+                map[start]--
+                start++
+            }
+            return true
+        }
+        isNStraightHand([1, 2, 3, 6, 2, 3, 4, 7, 8], 3)
+
+    </script>
+</body>
+
+</html>

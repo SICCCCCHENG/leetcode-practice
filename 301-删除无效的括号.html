@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        // 贪心 + 回溯
+        var removeInvalidParentheses2 = function (s) {
+            let min = 0
+            const length = s.length
+            let bracket = 0
+            for (let i = 0; i < length; i++) {
+                if (s[i] === '(') {
+                    bracket++
+                } else if (s[i] === ')') {
+                    bracket--
+                    if (bracket < 0) {
+                        min++
+                        bracket = 0
+                    }
+                }
+            }
+            min += bracket
+            const ans = [], path = []
+            let leftBracket = 0, res, popped
+            // debugger
+            const backTrack = (start, count) => {
+                if (start === length) {
+                    if (count === 0 && leftBracket === 0) {
+                        res = path.join('')
+                        if (res.length)
+                            ans.push(res)
+                    }
+                    return
+                }
+                if (leftBracket < 0 || (s[start] === ')' && leftBracket === 0)) return
+
+                if (s[start] !== '(' && s[start] !== ')') {
+                    path.push(s[start])
+                    backTrack(start + 1, count)
+                    path.pop()
+                } else if (count === 0) {
+                    if (s[start] === '(') {
+                        leftBracket++
+                    } else {
+                        leftBracket--
+                    }
+                    path.push(s[start])
+                    backTrack(start + 1, count)
+                    popped = path.pop()
+                    if (popped === '(') {
+                        leftBracket--
+                    } else {
+                        leftBracket++
+                    }
+                } else {
+                    backTrack(start + 1, count - 1)  // 跳过当前
+
+                    // 不跳过当前
+                    if (s[start] === '(') {
+                        leftBracket++
+                    } else {
+                        leftBracket--
+                    }
+                    path.push(s[start])
+                    backTrack(start + 1, count)
+                    popped = path.pop()
+                    if (popped === '(') {
+                        leftBracket--
+                    } else {
+                        leftBracket++
+                    }
+                }
+            }
+            backTrack(0, min)
+            return ans
+        };
+
+
+
+        // 贪心 + 回溯
+        var removeInvalidParentheses = function (s) {
+            let min = 0
+            const length = s.length
+            let bracket = 0
+            for (let i = 0; i < length; i++) {
+                if (s[i] === '(') {
+                    bracket++
+                } else if (s[i] === ')') {
+                    bracket--
+                    if (bracket < 0) {
+                        min++
+                        bracket = 0
+                    }
+                }
+            }
+            min += bracket
+            const ans = [], path = []
+            let leftBracket = 0, res, popped
+            const set = new Set()
+            debugger
+            const backTrack = (start, count) => {
+                if (start === length) {
+                    if (count === 0 && leftBracket === 0) {
+                        res = path.join('')
+                        if (res.length && !set.has(res))
+                            ans.push(res)
+                        set.add(res)
+                    }
+                    return
+                }
+                // if ((leftBracket < 0 || (s[start] === ')' && leftBracket === 0))) return
+                if (leftBracket < 0) return
+
+                if (s[start] !== '(' && s[start] !== ')') {
+                    path.push(s[start])
+                    backTrack(start + 1, count)
+                    path.pop()
+                } else if (count === 0) {
+                    if (s[start] === '(') {
+                        leftBracket++
+                    } else {
+                        leftBracket--
+                        if (leftBracket < 0) {
+                            leftBracket++
+                            return
+                        }
+                    }
+                    path.push(s[start])
+                    backTrack(start + 1, count)
+                    popped = path.pop()
+                    if (popped === '(') {
+                        leftBracket--
+                    } else {
+                        leftBracket++
+                    }
+                } else {
+                    backTrack(start + 1, count - 1)  // 跳过当前
+
+                    if (s[start] !== ')') {
+                        // 不跳过当前
+                        if (s[start] === '(') {
+                            leftBracket++
+                        } else {
+                            leftBracket--
+                        }
+                        path.push(s[start])
+                        backTrack(start + 1, count)
+                        popped = path.pop()
+                        if (popped === '(') {
+                            leftBracket--
+                        } else {
+                            leftBracket++
+                        }
+                    }
+                }
+            }
+            backTrack(0, min)
+            if (!ans.length) ans.push('')
+            return ans
+        };
+
+
+        // removeInvalidParentheses("()())()")
+        console.log(removeInvalidParentheses("()())()")); 
+    </script>
+</body>
+
+</html>

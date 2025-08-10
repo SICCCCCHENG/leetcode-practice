@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var getRow = function (rowIndex) {
+            const rtn = new Array(rowIndex + 1).fill(0)
+            rtn[0] = 1
+            if (rowIndex === 0) return rtn
+            let pre, temp
+            debugger
+            for (let i = 1; i <= rowIndex; i++) {
+                temp = null
+                for (let j = 0; j <= i; j++) {
+                    pre = rtn[j]
+                    
+                    rtn[j] = temp || 0 + rtn[j] || 0
+                    temp = pre
+                }
+            }
+            return rtn
+        };
+
+        getRow(3)
+    </script>
+</body>
+
+</html>

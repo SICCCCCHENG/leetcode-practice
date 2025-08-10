@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function TreeNode(val, left, right) {
+            this.val = val
+            this.left = left
+            this.right = right
+        }
+
+        var buildTree = function (preorder, inorder) {
+            const map = new Map()
+            for (let i = 0; i < inorder.length; i++) {
+                map.set(inorder[i], i)
+            }
+
+            const constructBT = (preLeft, preRight, inLeft, inRight) => {
+                if (preLeft > preRight) return null
+                const root = new TreeNode(preorder[preLeft])
+                const pIndex = map.get(preorder[preLeft])
+                root.left = constructBT(preLeft + 1, pIndex - inLeft + preLeft, inLeft, pIndex - 1)
+                root.right = constructBT(pIndex - inLeft + preLeft + 1, preRight, pIndex + 1, inRight)
+                return root
+            }
+            return constructBT(0, preorder.length - 1, 0, inorder.length - 1)
+        };
+        console.log(buildTree([3, 9, 20, 15, 7], [9, 3, 15, 20, 7]));
+
+
+
+
+        var buildTree = function (preorder, inorder) {
+            const length = inorder.length
+            const map = new Map()
+            for (let i = 0; i < length - 1; i++) {
+                map.set(inorder[i], i)
+            }
+            let preLeft = 0, preRight = preorder.length - 1
+            let inLeft = 0, inRight = inorder.length - 1
+            while(preLeft < preRight){
+                
+            }
+        };
+    </script>
+</body>
+
+</html>

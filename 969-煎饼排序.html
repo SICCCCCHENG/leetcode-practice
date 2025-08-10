@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var pancakeSort = function (arr) {
+            const length = arr.length
+            const map = {}
+            let lastTbd = length - 1
+            let rtn = []
+
+            for (let i = 0; i < length; i++) {
+                map[arr[i]] = i
+            }
+
+            const helper = (position) => {
+                rtn.push(position + 1)
+                let start = 0, last = position
+                let temp
+                while (start <= last) {
+                    temp = arr[start]
+                    arr[start] = arr[last]
+                    arr[last] = temp
+                    map[arr[start]] = start
+                    map[arr[last]] = last
+                    start++
+                    last--
+                }
+            }
+            debugger
+            while (lastTbd >= 0) {
+                if (lastTbd !== map[lastTbd + 1]) {
+                    helper(map[lastTbd + 1])
+                    helper(lastTbd)
+                }
+                lastTbd--
+            }
+            return rtn
+        };
+
+        pancakeSort([3, 2, 4, 1])
+    </script>
+</body>
+
+</html>

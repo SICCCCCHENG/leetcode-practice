@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var solveNQueens2 = function (n) {
+            const ans = []
+            const boardTaken = new Array(n).fill(0).map(() => new Array(n).fill('.'))
+            const rowTaken = new Array(n).fill('.')
+            const colTaken = new Array(n).fill('.')
+
+            const dfs = (x, y) => {
+                // 如果行、列、斜线方向上被占据，直接返回终止
+                if (rowTaken[y] === 'Q' || colTaken[x] === 'Q' || check(x, y, boardTaken, n)) {
+                    return
+                }
+                boardTaken[x][y] = 'Q'
+                rowTaken[y] = 'Q'
+                colTaken[x] = 'Q'
+                if (x === n - 1) {
+                    ans.push(boardTaken.map((item) => item.join('')))
+                    boardTaken[x][y] = 'Q'
+                    rowTaken[y] = 'Q'
+                    colTaken[x] = 'Q'
+                    return
+                }
+                for (let i = 0; i < n; i++) {
+                    dfs(x + 1, i)
+                }
+                // 还原
+                boardTaken[x][y] = '.'
+                rowTaken[y] = '.'
+                colTaken[x] = '.'
+            }
+            debugger
+            for (let j = 0; j < n; j++) {
+                dfs(0, j)
+            }
+            console.log('123');
+            return ans
+        };
+        // 判断斜线方向上
+        const check = (x, y, boardTaken, n) => {
+            let tempX = x, tempY = y
+            while (tempX - 1 >= 0 && tempY - 1 >= 0) { // 左上
+                tempX--
+                tempY--
+                if (boardTaken[tempX][tempY] === 'Q') {
+                    return true
+                }
+            }
+            tempX = x, tempY = y
+            while (tempX - 1 >= 0 && tempY + 1 < n) { // 右上
+                tempX--
+                tempY++
+                if (boardTaken[tempX][tempY] === 'Q') {
+                    return true
+                }
+            }
+            tempX = x, tempY = y
+            while (tempX + 1 < n && tempY - 1 >= 0) { // 左下
+                tempX++
+                tempY--
+                if (boardTaken[tempX][tempY] === 'Q') {
+                    return true
+                }
+            }
+            tempX = x, tempY = y
+            while (tempX + 1 < n && tempY + 1 < n) { // 右下
+                tempX++
+                tempY++
+                if (boardTaken[tempX][tempY] === 'Q') {
+                    return true
+                }
+            }
+            return false
+        }
+
+        var solveNQueens3 = function (n) {
+            // 初始化棋盘
+            const chessBoard = new Array(n).fill(0).map(() => new Array(n).fill('.'))
+            const colTaken = new Set()
+            // 左下-右上  相减
+            const positiveDiagonal = new Set()
+            // 左上-右下  相加
+            const negativeDiagonal = new Set()
+            const ans = []
+            const backTrack = (x, y) => {
+                if (colTaken.has(y) || positiveDiagonal.has(x - y) || negativeDiagonal.has(x + y)) {
+                    return
+                }
+                chessBoard[x][y] = 'Q'
+                colTaken.add(y)
+                positiveDiagonal.add(x - y)
+                negativeDiagonal.add(x + y)
+                if (x === n - 1) {
+                    ans.push(chessBoard.map((item) => item.join('')))
+                    chessBoard[x][y] = '.'
+                    colTaken.delete(y)
+                    positiveDiagonal.delete(x - y)
+                    negativeDiagonal.delete(x + y)
+                }
+                for (let i = 0; i < n; i++) {
+                    backTrack(x + 1, i)
+                }
+                chessBoard[x][y] = '.'
+                colTaken.delete(y)
+                positiveDiagonal.delete(x - y)
+                negativeDiagonal.delete(x + y)
+            }
+            // debugger
+            for (let i = 0; i < n; i++) {
+                backTrack(0, i)
+            }
+            return ans
+        };
+        var solveNQueens = function (n) {
+            // 初始化棋盘
+            const chessBoard = new Array(n).fill(0).map(() => new Array(n).fill('.'))
+            const colTaken = new Set()
+            // 左下-右上  相减
+            const positiveDiagonal = new Set()
+            // 左上-右下  相加
+            const negativeDiagonal = new Set()
+            const ans = []
+            const backTrack = (x, y) => {
+                if (colTaken.has(y) || positiveDiagonal.has(x - y) || negativeDiagonal.has(x + y)) {
+                    return
+                }
+                chessBoard[x][y] = 'Q'
+                colTaken.add(y)
+                positiveDiagonal.add(x - y)
+                negativeDiagonal.add(x + y)
+                if (x === n - 1) {
+                    ans.push(chessBoard.map((item) => item.join('')))
+                    chessBoard[x][y] = '.'
+                    colTaken.delete(y)
+                    positiveDiagonal.delete(x - y)
+                    negativeDiagonal.delete(x + y)
+                }
+                for (let i = 0; i < n; i++) {
+                    backTrack(x + 1, i)
+                }
+                chessBoard[x][y] = '.'
+                colTaken.delete(y)
+                positiveDiagonal.delete(x - y)
+                negativeDiagonal.delete(x + y)
+            }
+            debugger
+            for (let i = 0; i < n; i++) {
+                backTrack(0, i)
+            }
+            return ans
+        };
+        console.log(solveNQueens2(8)); 
+    </script>
+
+</body>
+
+</html>

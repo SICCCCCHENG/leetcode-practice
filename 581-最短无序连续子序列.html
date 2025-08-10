@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        var findUnsortedSubarray2 = function (nums) {
+            const length = nums.length
+            if (length === 1) return 0
+            const copied = [...nums]
+            copied.sort((a, b) => a - b)
+            let i = 0, j = length - 1
+            debugger
+            while (i <= j && nums[i] === copied[i] && nums[j] === copied[j]) {
+                if (nums[i] === copied[i]) {
+                    i++
+                }
+                if (nums[j] === copied[j]) {
+                    j--
+                }
+            }
+            return j - i + 1
+        };
+
+        var findUnsortedSubarray = function (nums) {
+            const length = nums.length
+            const monotonicQueue = []
+            let i = 0, left = length - 1, right = 0
+            debugger
+            while (i < length) {
+                while (monotonicQueue.length && nums[monotonicQueue[monotonicQueue.length - 1]] > nums[i]) {
+                    left = Math.min(left, monotonicQueue.pop())
+                    right = Math.max(right, i)
+                }
+                monotonicQueue.push(i)
+                i++
+            }
+            for (let j = left + 1; j < length; j++) {
+                if (nums[j] < nums[left]) {
+                    right = Math.max(right, j)
+                }
+            }
+            return right - left > 0 ? right - left + 1 : 0
+        };
+
+        findUnsortedSubarray([1, 3, 5, 2, 4])
+    </script>
+</body>
+
+</html>

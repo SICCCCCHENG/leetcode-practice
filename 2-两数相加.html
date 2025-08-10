@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>两数相加</title>
+</head>
+
+<body>
+
+    <script>
+
+        function ListNode(val, next) {
+            this.val = (val === undefined ? 0 : val)
+            this.next = (next === undefined ? null : next)
+        }
+
+        var addTwoNumbers = function (l1, l2) {
+            let carry = 0, head = l1, tempSum = 0, reachToEnd = false
+            // debugger
+            while (!reachToEnd || JSON.stringify(l2) !== '{}') {
+                tempSum += l1.val ? l1.val : 0
+                tempSum += l2.val ? l2.val : 0
+                l1.val = (tempSum + carry) % 10
+                carry = (tempSum + carry) >= 10 ? 1 : 0
+                tempSum = 0
+                l2 = l2.next ? l2.next : {}
+                if (!l1.next) {
+                    if(JSON.stringify(l2) === '{}'){
+                        l1.next = null
+                        break
+                    }else{
+                        l1.next = new ListNode(0, null)
+                    }
+                    reachToEnd = true
+                }
+                l1 = l1.next
+            }
+            l1.next = carry ? new ListNode(1, null) : null
+            return head
+        };
+
+        // console.log(
+        //     addTwoNumbers(
+        //         new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, null))))))),
+        //         new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, null))))
+        //     )
+        // );
+
+        console.log(
+            addTwoNumbers(
+                new ListNode(0, null),
+                new ListNode(7, new ListNode(3, null))
+            )
+        );
+
+    </script>
+
+</body>
+
+</html>

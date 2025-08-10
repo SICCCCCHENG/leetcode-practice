@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        class Node {
+            constructor(next, cost) {
+                this.next = next
+                this.cost = cost
+            }
+        }
+        var calcEquation = function (equations, values, queries) {
+            const map = new Map()
+            const length = equations.length
+            const res = []
+            // debugger
+            for (let i = 0; i < length; i++) {
+                if (!map.has(equations[i][0])) {
+                    map.set(equations[i][0], { next: equations[i][0], cost: 1 })
+                }
+                if (!map.has(equations[i][1])) {
+                    map.set(equations[i][1], { next: equations[i][1], cost: 1 })
+                }
+                union(equations[i][0], equations[i][1], values[i], map)
+            }
+            debugger
+            for (const [x, y] of queries) {
+                if (!map.has(x) || !map.has(y)) {
+                    res.push(-1)
+                } else {
+                    const next_x = find(x, map)
+                    const next_y = find(y, map)
+                    if (next_x.next !== next_x.next) { // 不在同一个连通分量
+                        res.push(-1)
+                    } else {
+                        res.push(next_x.cost / next_y.cost)
+                    }
+                }
+            }
+            return res
+        };
+
+        const find = (node, map) => {
+            if (map.get(node).next !== node) {
+                const { next, cost } = find(map.get(node).next, map)
+                map.set(node, { next, cost: cost * map.get(node).cost })
+            }
+            return map.get(node)
+        }
+
+        const union = (node1, node2, cost, map) => {
+            const root1 = find(node1, map)
+            const root2 = find(node2, map)
+            if (root1.next !== root2.next) { // 不在同个连通分量
+                if (node1 === root1.next) {
+                    map.set(root1.next, { next: node2, cost })
+                } else {
+                    map.set(root1.next, { next: node2, cost: cost / map.get(node1).cost })
+                } 
+            }
+        }
+
+
+        // console.log(calcEquation([["a", "b"], ["b", "c"]], [2.0, 3.0], [["a", "c"], ["b", "a"], ["a", "e"], ["a", "a"], ["x", "x"]]));
+        // console.log(calcEquation([["a", "b"], ["b", "c"], ["bc", "cd"]], [1.5, 2.5, 5.0], [["a", "c"], ["c", "b"], ["bc", "cd"], ["cd", "bc"]]));
+        // console.log(calcEquation([["a", "aa"]], [9.0], [["aa", "a"], ["aa", "aa"]]));
+
+        // console.log(calcEquation([["a", "b"], ["c", "d"]], [1.0, 1.0], [["a", "c"], ["b", "d"], ["b", "a"], ["d", "c"]]));
+
+        console.log(calcEquation([["a", "b"], ["b", "c"], ["d", "e"], ["a", "d"]], [1.0, 2.0, 3.0, 4.0], [["c", "e"]]));
+
+        // [["d", "f"], ["e", "g"], ["e", "k"], ["h", "a"], ["aaa", "k"], ["aaa", "i"], ["aa", "e"], ["aaa", "aa"], ["aaa", "ff"], ["bbb", "bb"], ["bb", "h"], ["bb", "i"], ["bb", "k"], ["aaa", "k"], ["k", "l"], ["x", "k"], ["l", "ll"]]
+        // [ 1.66667,       1.5,        2.5,      0.14286,      10.0,           8.0,        4.0,            1.0,            5.0,        0.33333,        7.0,        8.0,        10.0,       10.0,           1.1,        -1.0,       -1.0    ]
+        // [ 1.66667,       1.50000,    2.50000,  0.14286,      10.00000,       8.00000,    4.00000,        1.00000,        5.00000,    0.33333,        2.33333,    2.66667,    3.33333,    10.00000,       1.10000,    -1.00000,   11.00000]
+    </script>
+</body>
+
+</html>

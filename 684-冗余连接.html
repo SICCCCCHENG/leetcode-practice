@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 并查集
+        var findRedundantConnection = function (edges) {
+            const n = edges.length
+            const rootArr = new Array(n + 1).fill(0).map((_, index) => index)
+            debugger
+            for (const tuple of edges) {
+                if (find(tuple[0], rootArr) !== find(tuple[1], rootArr)) {
+                    union(tuple[0], tuple[1], rootArr)
+                } else {
+                    return tuple
+                }
+            }
+        };
+
+        const find = (node, rootArr) => {
+            if (rootArr[node] !== node) {
+                rootArr[node] = find(rootArr[node], rootArr)
+            }
+            return rootArr[node]
+        }
+
+        const union = (node1, node2, rootArr) => {
+            rootArr[find(node1)] = find(node2)
+        }
+
+        findRedundantConnection([[1, 2], [1, 3], [2, 3]])
+        // findRedundantConnection([[3, 4], [1, 2], [2, 4], [3, 5], [2, 5]])
+    </script>
+</body>
+
+</html>

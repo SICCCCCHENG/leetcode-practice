@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var numRabbits = function (answers) {
+            const length = answers.length
+            const map = {}
+            let ans = 0
+            for (let i = 0; i < length; i++) {
+                map[answers[i]] = (map[answers[i]] || 0) + 1
+            }
+            let sub
+            debugger
+            for (const [key, value] of Object.entries(map)) {
+                sub = Math.ceil(value / (Number(key) + 1)) * (Number(key) + 1)
+                ans += sub
+            }
+            return ans
+        };
+
+        numRabbits([10, 10, 10])
+    </script>
+</body>
+
+</html>

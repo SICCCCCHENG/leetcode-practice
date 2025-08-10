@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var subsets = function (nums) {
+            const length = nums.length
+            const ans = []
+            const ele = []
+            debugger
+            const backTrack = (startIndex) => {
+                if (startIndex === length) return
+                for (let i = startIndex; i < length; i++) {
+                    ele.push(nums[i])
+                    ans.push([...ele])
+                    backTrack(i + 1)
+                    ele.pop()
+                }
+            }
+            ans.push([])
+            backTrack(0)
+            return ans
+        };
+        subsets([1, 2, 3])
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        var maxChunksToSorted = function (arr) {
+            const length = arr.length
+            const copiedArr = [...arr]
+            copiedArr.sort((a, b) => a - b)
+            const map = {}
+            let ans = 0, fast = 0, slow = 0, last = 0
+            debugger
+            for (let i = 0; i < length; i++) {
+                map[arr[i]] = true
+                if (checkCanReach(copiedArr, map, last, i)) {
+                    ans++
+                    last = i
+                }
+            }
+            return ans
+        };
+
+        const checkCanReach = (arr, map, last, dest) => {
+            for (let i = last; i <= dest; i++) {
+                if (!map[arr[i]]) {
+                    return false
+                }
+            }
+            return true
+        }
+
+        maxChunksToSorted([4, 3, 2, 1, 0])
+    </script>
+</body>
+
+</html>

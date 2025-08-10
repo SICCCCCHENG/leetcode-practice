@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function TreeNode(val, left, right) {
+            this.val = (val === undefined ? 0 : val)
+            this.left = (left === undefined ? null : left)
+            this.right = (right === undefined ? null : right)
+        }
+
+        var pathSum = function (root, targetSum) {
+            if (!root) return []
+            return helper(root, targetSum, 0)
+        };
+        const helper = (node, targetSum, curSum) => {
+            // debugger
+            // 已经是根节点
+            if (!node.left && !node.right) {
+                if (curSum + node.val === targetSum) {
+                    return [[node.val]]
+                } else {
+                    return null
+                }
+            }
+            let left = null, right = null
+            if (node.left) {
+                left = helper(node.left, targetSum, curSum + node.val)
+            }
+            if (node.right) {
+                right = helper(node.right, targetSum, curSum + node.val)
+            }
+            if (left) {
+                for (let arr of left) {
+                    arr.unshift(node.val)
+                }
+            }
+            if (right) {
+                for (let arr of right) {
+                    arr.unshift(node.val)
+                }
+            }
+            if (!left && !right) return null
+            if (!left) return right
+            if (!right) return left
+            return [...left, ...right]
+        }
+
+        const node2 = new TreeNode(2)
+        const node3 = new TreeNode(3)
+        const node1 = new TreeNode(1, node2, node3)
+
+        pathSum(node1, 5)
+
+    </script>
+</body>
+
+</html>
