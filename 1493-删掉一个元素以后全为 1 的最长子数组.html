@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const a = [1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1];
+      var longestSubarray = function (nums) {
+        const str = nums.join("");
+        const strArr = str.split("0");
+        let maxSingle = strArr[0].length;
+        let ans = 0;
+        let hasZero = strArr[0].length !== nums.length;
+        for (let i = 1; i < strArr.length; i++) {
+          const temp = strArr[i - 1].length + strArr[i].length;
+          maxSingle = Math.max(maxSingle, strArr[i].length);
+          ans = Math.max(temp, ans, maxSingle);
+        }
+        return hasZero ? ans : nums.length - 1;
+      };
+
+      debugger;
+      longestSubarray(a);
+    </script>
+  </body>
+</html>
