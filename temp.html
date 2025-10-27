@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const a = {
+        i: 0,
+        valueOf: function () {
+          console.log("@@@");
+          return ++this.i;
+        },
+      };
+
+      console.log(a == 1 && a == 2 && a == 3);
+      console.log(a, "@@@");
+
+      //   let i = 0;
+      //   const a = {
+      //     valueOf: function () {
+      //       return ++i;
+      //     },
+      //   };
+
+      //   if (a == 1 && a == 2 && a == 3) {
+      //     console.log("这太神奇了！"); // 这行代码会执行
+      //   }
+    </script>
+  </body>
+</html>

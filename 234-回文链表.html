@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function ListNode(val, next) {
+        this.val = val === undefined ? 0 : val;
+        this.next = next === undefined ? null : next;
+      }
+      var isPalindrome = function (head) {
+        if (!head.next) return true;
+        let slow = head,
+          fast = head.next;
+        while (true) {
+          if (!fast || !fast.next) break;
+          slow = slow.next;
+          fast = fast.next.next;
+        }
+        debugger;
+        reverseLink(slow);
+        let firstNode = head,
+          secondNode = slow.next;
+        while (secondNode) {
+          if (firstNode.val !== secondNode.val) return false;
+          firstNode = firstNode.next;
+          secondNode = secondNode.next;
+        }
+        return true;
+      };
+
+      const reverseLink = (preNode) => {
+        let curNode = preNode.next,
+          nextNode = curNode.next;
+        preNode.next = null;
+        if (!nextNode || !curNode.next) return;
+        while (curNode) {
+          curNode.next = preNode.next;
+          preNode.next = curNode;
+          if (!nextNode) return;
+          curNode = nextNode;
+          nextNode = curNode.next;
+        }
+      };
+      isPalindrome(new ListNode(1, new ListNode(2, null)));
+    </script>
+  </body>
+</html>

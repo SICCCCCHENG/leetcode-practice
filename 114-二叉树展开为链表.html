@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function TreeNode(val, left, right) {
+        this.val = val === undefined ? 0 : val;
+        this.left = left === undefined ? null : left;
+        this.right = right === undefined ? null : right;
+      }
+      var flatten = function (root) {
+        let cur_node = root;
+        debugger
+        while (cur_node.left || cur_node.right) {
+          if (cur_node.left) {
+            const right_least_node = findNode(cur_node.left);
+            right_least_node.right = cur_node.right;
+            cur_node.right = cur_node.left;
+            cur_node.left = null;
+          }
+          cur_node = cur_node.right;
+        }
+      };
+
+      const findNode = (node) => {
+        let tempNode = node;
+        while (tempNode.right) {
+          tempNode = tempNode.right;
+        }
+        return tempNode;
+      };
+
+      var root = new TreeNode(
+        4,
+        new TreeNode(1, null, new TreeNode(2, null, new TreeNode(3))),
+        null
+      );
+      flatten(root);
+      console.log(root);
+    </script>
+  </body>
+</html>

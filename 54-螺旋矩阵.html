@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var spiralOrder = function (matrix) {
+        const m = matrix.length,
+          n = matrix[0].length;
+        let left = -1,
+          right = n,
+          top = -1,
+          bottom = m;
+        let i = 0,
+          j = 0;
+        const ans = [];
+        debugger
+        while (left < right && top < bottom) {
+          while (j < right) {
+            ans.push(matrix[i][j]);
+            j++;
+          }
+          j--;
+          i++;
+          top++;
+          while (i < bottom) {
+            ans.push(matrix[i][j]);
+            i++;
+          }
+          i--;
+          j--;
+          right--;
+          while (j > left) {
+            ans.push(matrix[i][j]);
+            j--;
+          }
+          j++;
+          i--;
+          bottom--;
+          while (i > top) {
+            ans.push(matrix[i][j]);
+            i--;
+          }
+          i++;
+          j++;
+          left++;
+        }
+        return ans;
+      };
+      spiralOrder([
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+      ]);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function TreeNode(val, left, right) {
+        this.val = val === undefined ? 0 : val;
+        this.left = left === undefined ? null : left;
+        this.right = right === undefined ? null : right;
+      }
+      var isSymmetric = function (root) {
+        debugger
+        if (!root) return true;
+        let queue = [root];
+        let arr = [];
+        while (queue.length) {
+          for (let node of queue) {
+            if (!node || !node.left) {
+              arr.push("");
+            } else {
+              arr.push(node.left);
+            }
+            if (!node || !node.right) {
+              arr.push("");
+            } else {
+              arr.push(node.right);
+            }
+          }
+          if (arr.join("") === "") return true;
+          if (!checkSymmetric(arr)) return false;
+          queue = arr;
+          arr.length = 0;
+        }
+        return true;
+      };
+      const checkSymmetric = (arr) => {
+        let left = 0,
+          right = arr.length - 1;
+        while (left <= right) {
+          if (arr[left].val !== arr[right].val) return false;
+          left++;
+          right--;
+        }
+        return true;
+      };
+      const root = new TreeNode(
+        1,
+        new TreeNode(2, null, new TreeNode(3)),
+        new TreeNode(2, null, new TreeNode(3))
+      );
+      isSymmetric(root);
+    </script>
+  </body>
+</html>

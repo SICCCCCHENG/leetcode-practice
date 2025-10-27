@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function TreeNode(val, left, right) {
+        this.val = val === undefined ? 0 : val;
+        this.left = left === undefined ? null : left;
+        this.right = right === undefined ? null : right;
+      }
+      var maxDepth = function (root) {
+        debugger
+        let length = 0,
+          ans = 0;
+        const helper = (node) => {
+          if (!node) return;
+          length++;
+          ans = Math.max(ans, length);
+          helper(node.left);
+          helper(node.right);
+          length--;
+        };
+        helper(root);
+        return length;
+      };
+
+      const root = new TreeNode(1, null, new TreeNode(2, null, null));
+      maxDepth(root);
+    </script>
+  </body>
+</html>

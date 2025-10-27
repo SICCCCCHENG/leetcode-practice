@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var productExceptSelf = function (nums) {
+        const preProd = [],
+          postProd = [],
+          length = nums.length,
+          ans = [];
+        preProd[0] = nums[0];
+        debugger
+        postProd[length - 1] = nums[length - 1];
+        for (let i = 1; i < length; i++) {
+          preProd[i] = preProd[i - 1] * nums[i];
+        }
+        for (let i = length - 2; i >= 0; i--) {
+          postProd[i] = postProd[i + 1] * nums[i];
+        }
+        for (let i = 0; i < length; i++) {
+            const temp1 = (preProd[i - 1] || 1)
+            const temp2 = (postProd[i + 1] || 1)
+          ans[i] = temp1 * temp2;
+        }
+        return ans;
+      };
+
+      productExceptSelf([-1,1,0,-3,3])
+    </script>
+  </body>
+</html>
